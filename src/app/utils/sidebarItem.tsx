@@ -62,13 +62,18 @@ const accountIc = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0
 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
 </svg>
 
+const petIC = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+<path strokeLinecap="round" strokeLinejoin="round" d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+</svg>
+
+
 
 
 export const sidebarItems = [
   { key: "dashboard", text: "Tổng quan", icon: dashboardIc },
   { key: "makeinvoice", text: "Lập hoá đơn", icon: makeInvoiceIc },
   { key: "invoices", text: "Hoá đơn", icon: invoiceIc },
-  { key: "pets", text: "Thú cưng", icon: dashboardIc },
+  { key: "pets", text: "Thú cưng", icon: petIC },
   { key: "custommers", text: "Khách hàng", icon: custommersIc },
   { key: "staffs", text: "Nhân viên", icon: staffIc },
   { key: "services", text: "Dịch vụ", icon: serviceIc },

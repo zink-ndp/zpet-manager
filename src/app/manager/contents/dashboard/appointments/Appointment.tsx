@@ -11,9 +11,9 @@ export default function Appointment(props:any) {
             height={80}
             width={80}
             />
-        <div className="flex flex-col p-4">
-            <p className="text-blue-800 text-lg font-bold">Tên khách hàng</p>
-            <p className="text-black ">{props.type}</p>
+        <div className="flex flex-col p-3 ml-4">
+            <p className="text-blue-800 text-xl font-bold">Tên khách hàng</p>
+            <p className="text-black text-lg ">{props.type}</p>
         </div>
     </div>
   )
