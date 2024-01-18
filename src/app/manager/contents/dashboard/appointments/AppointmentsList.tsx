@@ -9,8 +9,6 @@ import { TabPanel } from "@mui/joy";
 export default function AppointmentsList() {
 
   const [index, setIndex] = React.useState(0);
-
-
   return <>
       <Tabs
           className="mt-5"
@@ -69,21 +67,22 @@ export default function AppointmentsList() {
               color={index === 2 ? "primary" : "neutral"}
             >
               Đã hoàn thành
-            </Tab>
+            </Tab> 
           </TabList>
           <TabPanel value={0}>
             <div className="flex flex-col space-y-5 mt-5 ">
-              <Appointment type='0' />
+              <Appointment name="En Thuw" service='Tỉa lông' />
+              <Appointment name="Zin Zin" service='Tắm' />
             </div>
           </TabPanel>
           <TabPanel value={1}>
             <div className="flex flex-col space-y-5 mt-5 ">
-              <Appointment type='1' />
+              <Appointment name="Fukk" service='1' />
             </div>
           </TabPanel>
           <TabPanel value={2}>
             <div className="flex flex-col space-y-5 mt-5 ">
-              <Appointment type='2' />
+              <Appointment name="Dy Yi" service='2' />
             </div>
           </TabPanel>
         </Tabs>

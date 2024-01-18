@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Autocomplete from "@mui/joy/Autocomplete";
 import Checkbox from "@mui/joy/Checkbox";
 import { getToday } from "@/app/functions";
+import Chip from "@mui/joy/Chip";
+import { Close } from "@mui/icons-material";
 
 export default function MakeInvoice() {
   const today = getToday();
@@ -18,6 +20,19 @@ export default function MakeInvoice() {
   const [shipPet, setShipPet] = useState(false);
   const [address, setAddress] = useState<String | null>("");
   const [fee, setFee] = useState(0);
+
+  const [btnEnable, setBtnEnable] = useState(false);
+
+
+  useEffect(()=>{
+    function checkFormOk() {
+        if (!phone || !cusName || !pet || !service) return false;
+        return true;
+      }
+    const isOk =  checkFormOk() 
+    isOk ? setBtnEnable(true) : setBtnEnable(false)
+    console.log(isOk,phone,cusName,pet,service)
+  },[phone,cusName,pet,service])
 
   return (
     <>
@@ -40,6 +55,7 @@ export default function MakeInvoice() {
           className="w-full h-[50px]"
           onChange={(event, nValue) => {
             setPhone(nValue);
+            ;
           }}
         />
         <p className="text-lg mt-4">Tên khách hàng</p>
@@ -50,6 +66,7 @@ export default function MakeInvoice() {
           value={cusName}
           onChange={(event, nValue) => {
             setCusName(nValue);
+            ;
           }}
         />
         <p className="text-lg mt-4">Thú cưng</p>
@@ -59,7 +76,8 @@ export default function MakeInvoice() {
           className="w-full h-[50px]"
           value={pet}
           onChange={(event, nValue) => {
-            setPet(nValue);
+            setPet(nValue)
+            ;
           }}
         />
         <p className="text-lg mt-4">Dịch vụ</p>
@@ -67,11 +85,12 @@ export default function MakeInvoice() {
           multiple
           placeholder="Dịch vụ"
           limitTags={4}
+          size="lg"
           options={testOption}
           getOptionLabel={(option) => option}
           onChange={(event, nValue) => {
-            setService(nValue)
-            console.log(service)
+            setService(nValue);
+            ;
           }}
           className="w-full h-[50px]"
         />
@@ -84,7 +103,10 @@ export default function MakeInvoice() {
           label="Áp dụng giao thú cưng tận nhà:"
           size="lg"
           checked={shipPet}
-          onChange={(e) => setShipPet(!shipPet)}
+          onChange={(e) => {
+            setShipPet(!shipPet);
+            
+          }}
         />
         {shipPet && (
           <div>
@@ -97,13 +119,18 @@ export default function MakeInvoice() {
             <p className="text-md mt-2">Phí vận chuyển: {fee}đ</p>
           </div>
         )}
+
+        <button
+          className={`justify-center mt-5 ${
+            btnEnable ? "primary-btn" : "primary-disabled-btn"
+          } `}
+          onClick={(e) => {
+            console.log(cusName, service, phone);
+          }}
+        >
+          Lập hoá đơn
+        </button>
       </div>
-      <button
-        className="bg-blue-200 fixed bottom-10 right-10 sidebar-btn"
-        onClick={(e)=>{
-            console.log(cusName, service, phone)
-        }}
-      >test</button>
     </>
   );
 }
