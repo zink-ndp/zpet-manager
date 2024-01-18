@@ -20,7 +20,7 @@ export default function Dashboard() {
         <Sheet
           variant="outlined"
           sx={{
-            minWidth: {sm: 0.8, lg: 0.6},
+            minWidth: {sm: 0.8, lg: 0.5},
             borderRadius: "md",
             p: 3,
             boxShadow: "lg",
