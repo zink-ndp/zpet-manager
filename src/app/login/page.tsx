@@ -2,14 +2,27 @@
 import { useState } from "react";
 import Image from "next/image";
 import BackgroundMain from "../component/ui/BackgroundMain";
-import { FormLabel, Input, styled } from "@mui/joy";
+import {
+  FormLabel,
+  Input,
+  List,
+  ListItem,
+  ListItemDecorator,
+  Radio,
+  RadioGroup,
+  Sheet,
+  styled,
+} from "@mui/joy";
 import { handleLogin } from "../functions";
 import React from "react";
+import { People, Person } from "@mui/icons-material";
+import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 
 export default function Page() {
+  const iconDecoration = [<Person key={0}/>, <People key={1}/>]
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-
+  const [role, setRole] = useState("");
   return (
     <>
       <div className=" flex justify-center h-[100vh] w-[100%] fixed z-10">
@@ -23,7 +36,9 @@ export default function Page() {
           />
 
           <div className="flex flex-col w-[100%] h-[100%] justify-center items-center p-10 lg:px-32 space-y-6">
-            <p className="text-black text-4xl bold">ZPet Manager Login</p>
+            <span className="text-black text-4xl bold w-full">
+              Đăng nhập hệ thống <p className="text-blue-500">ZPet</p>
+            </span>
             <input
               className="bg-white w-full border-2 border-blue-300 p-3 rounded-md text-black"
               type="text"
@@ -44,12 +59,50 @@ export default function Page() {
                 setPass(e.target.value);
               }}
             />
+            <RadioGroup
+              aria-label="platform"
+              overlay
+              name="platform"
+              sx={{
+                flexDirection: "row",
+                gap: 2,
+              }}
+            >
+              {["Nhân viên", "Quản lý"].map((value, index) => (
+                <Sheet
+                  key={value}
+                  variant="outlined"
+                  color={role==value ? 'primary' : 'neutral'}
+                  sx={{
+                    borderRadius: "md",
+                    boxShadow: "sm",
+                    display: "flex",
+                    flexDirection: "row-reverse",
+                    alignItems: "center",
+                    gap: 1.5,
+                    p: 2,
+                    minWidth: 150,
+                  }}
+                >
+                  <Radio
+                    id={value}
+                    value={value}
+                    defaultChecked={role==value}
+                    checkedIcon={<CheckCircleRoundedIcon />}
+                    onChange={()=>setRole(value)}
+                    className="ml-5"
+                  />
+                  <FormLabel htmlFor={value}>{value}</FormLabel>
+                  {iconDecoration[index]}
+                </Sheet>
+              ))}
+            </RadioGroup>
             <button
               className=" w-full bg-blue-500 hover:bg-blue-300 bold p-3 rounded-md disabled:bg-blue-100"
-              disabled={!email || !pass}
+              disabled={!email || !pass || !role}
               onClick={handleLogin}
             >
-              Login
+              Đăng nhập
             </button>
           </div>
         </div>

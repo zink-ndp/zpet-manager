@@ -131,7 +131,7 @@ const petIC = (
   </svg>
 );
 
-export const sidebarItems = [
+export const sidebarItemsManager = [
   { key: "dashboard", text: "Tổng quan", icon: dashboardIc },
   { key: "makeinvoice", text: "Lập hoá đơn", icon: makeInvoiceIc },
   { key: "invoices", text: "Hoá đơn", icon: invoiceIc },
@@ -140,4 +140,12 @@ export const sidebarItems = [
   { key: "staffs", text: "Nhân viên", icon: staffIc },
   { key: "services", text: "Dịch vụ", icon: serviceIc },
   { key: "account", text: "Tài khoản", icon: accountIc },
+];
+
+export const sidebarItemsStaff = [
+  { key: "dashboard", text: "Tổng quan", icon: dashboardIc },
+  { key: "makeinvoice", text: "Lập hoá đơn", icon: makeInvoiceIc },
+  { key: "invoices", text: "Hoá đơn", icon: invoiceIc },
+  { key: "pets", text: "Thú cưng", icon: petIC },
+  { key: "custommers", text: "Khách hàng", icon: custommersIc },
 ];

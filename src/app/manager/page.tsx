@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { handleLogout } from "../functions";
-import { sidebarItems } from "../utils/sidebarItem";
+import { sidebarItemsManager, sidebarItemsStaff } from "../utils/sidebarItem";
 import BackgroundMain from "../component/ui/BackgroundMain";
 import DividerHorizon from "../component/ui/DividerHorizon";
 import Content from "../manager/Content";
@@ -10,17 +10,22 @@ export default function Page() {
   const [activedTab, setActivedTab] = useState("dashboard");
   const [expand, setExpand] = useState(false);
 
+  const isAdmin = true
+  const roleSidebar = (
+    isAdmin ? sidebarItemsManager : sidebarItemsStaff
+  )
+
   return (
     <>
       <main className="w-full">
         <div className="flex flex-row z-10 w-full">
           <div
             className={
-              ` ${expand ? 'w-[270px]' : 'w-[auto]'} h-[800px] lg:flex relative lg:w-56 z-30 bg-white p-4 m-4 rounded-xl shadow-xl flex-col lg:items-start items-center space-y-5 `
+              ` ${expand ? 'w-[270px]' : 'w-[auto]'} ${isAdmin ? 'h-[800px] lg:h-[720px]' : 'h-[520px] lg:h-[520px]'} lg:flex relative lg:w-56 z-30 bg-white p-4 m-4 rounded-xl shadow-xl flex-col lg:items-start items-center space-y-5 `
             }
           >
-            <p className="hidden lg:blocktext-black text-2xl font-bold self-center py-4">
-              ZPet
+            <p className="hidden lg:block text-black text-2xl font-bold self-center py-4">
+              <span className="text-blue-500">Z</span>Pet
             </p>
             <button className="sidebar-btn lg:hidden"
                 onClick={(e)=>setExpand(!expand)}>
@@ -41,8 +46,8 @@ export default function Page() {
             </button>
             {(() => {
               const items: any = [];
-              for (let index = 0; index < sidebarItems.length; index++) {
-                const item = sidebarItems[index];
+              for (let index = 0; index < roleSidebar.length; index++) {
+                const item = roleSidebar[index];
                 items.push(
                   <button
                     key={item.key}
@@ -61,8 +66,6 @@ export default function Page() {
                     
                   </button>
                 );
-                if (index == 0 || index == 2 || index == 4 || index == 6)
-                  items.push(<DividerHorizon />);
               }
               return items;
             })()}
