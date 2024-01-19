@@ -45,6 +45,7 @@ export default function Page() {
                 const item = sidebarItems[index];
                 items.push(
                   <button
+                    key={item.key}
                     className={
                       activedTab == item.key
                         ? "sidebar-btn-active"
