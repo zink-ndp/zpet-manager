@@ -4,6 +4,7 @@ import Checkbox from "@mui/joy/Checkbox";
 import { getToday } from "@/app/functions";
 import Chip from "@mui/joy/Chip";
 import { Close } from "@mui/icons-material";
+import { List, ListDivider, ListItem, Radio, RadioGroup } from "@mui/joy";
 
 export default function MakeInvoice() {
   const today = getToday();
@@ -19,20 +20,20 @@ export default function MakeInvoice() {
   const [service, setService] = useState<String[] | any>();
   const [shipPet, setShipPet] = useState(false);
   const [address, setAddress] = useState<String | null>("");
-  const [fee, setFee] = useState(0);
+  const [price, setPrice] = useState(0);
+  const [payment, setPayment] = useState("");
+  const [total, setTotal] = useState(0);
 
   const [btnEnable, setBtnEnable] = useState(false);
 
-
-  useEffect(()=>{
+  useEffect(() => {
     function checkFormOk() {
-        if (!phone || !cusName || !pet || !service) return false;
-        return true;
-      }
-    const isOk =  checkFormOk() 
-    isOk ? setBtnEnable(true) : setBtnEnable(false)
-    console.log(isOk,phone,cusName,pet,service)
-  },[phone,cusName,pet,service])
+      if (!phone || !cusName || !pet || !service || !payment) return false;
+      return true;
+    }
+    const isOk = checkFormOk();
+    isOk ? setBtnEnable(true) : setBtnEnable(false);
+  }, [phone, cusName, pet, service, payment]);
 
   return (
     <>
@@ -55,7 +56,6 @@ export default function MakeInvoice() {
           className="w-full h-[50px]"
           onChange={(event, nValue) => {
             setPhone(nValue);
-            ;
           }}
         />
         <p className="text-lg mt-4">Tên khách hàng</p>
@@ -66,7 +66,6 @@ export default function MakeInvoice() {
           value={cusName}
           onChange={(event, nValue) => {
             setCusName(nValue);
-            ;
           }}
         />
         <p className="text-lg mt-4">Thú cưng</p>
@@ -76,8 +75,7 @@ export default function MakeInvoice() {
           className="w-full h-[50px]"
           value={pet}
           onChange={(event, nValue) => {
-            setPet(nValue)
-            ;
+            setPet(nValue);
           }}
         />
         <p className="text-lg mt-4">Dịch vụ</p>
@@ -90,13 +88,13 @@ export default function MakeInvoice() {
           getOptionLabel={(option) => option}
           onChange={(event, nValue) => {
             setService(nValue);
-            ;
+            setPrice(price + 1);
           }}
           className="w-full h-[50px]"
         />
 
         <p className="text-lg mt-4">
-          Đơn giá dịch vụ tạm tính: <p className="font-bold">{fee}đ</p>
+          Đơn giá dịch vụ tạm tính: <p className="font-bold">{price}đ</p>
         </p>
         <Checkbox
           className="text-xl mt-4 font-semi-bold"
@@ -105,7 +103,6 @@ export default function MakeInvoice() {
           checked={shipPet}
           onChange={(e) => {
             setShipPet(!shipPet);
-            
           }}
         />
         {shipPet && (
@@ -116,16 +113,64 @@ export default function MakeInvoice() {
               options={testOption}
               className="w-full h-[50px]"
             />
-            <p className="text-md mt-2">Phí vận chuyển: {fee}đ</p>
+            <p className="text-md mt-2">Phí vận chuyển: {price}đ</p>
           </div>
         )}
+
+        {(() => {
+          if (price)
+            return (
+              <>
+                <p className="text-lg mt-4">Hình thức thanh toán:</p>
+                <RadioGroup
+                  aria-labelledby="example-payment-channel-label"
+                  overlay
+                  name="example-payment-channel"
+                  defaultValue="Paypal"
+                >
+                  <List
+                    component="div"
+                    variant="outlined"
+                    orientation={"vertical"}
+                    sx={{
+                      borderRadius: "sm",
+                      boxShadow: "sm",
+                    }}
+                  >
+                    {["Tiền mặt", "QR Code"].map((value, index) => (
+                      <React.Fragment key={value}>
+                        {index !== 0 && <ListDivider />}
+                        <ListItem>
+                          <Radio
+                            id={value}
+                            value={value}
+                            label={value}
+                            onChange={() => setPayment(value)}
+                          />
+                        </ListItem>
+                      </React.Fragment>
+                    ))}
+                  </List>
+                </RadioGroup>
+              </>
+            );
+        })()}
+
+        {(() => {
+          if (payment == "QR Code") return <p className="text-black">QRCODE</p>;
+        })()}
+
+        <ListDivider sx={{marginTop: "15px"}} />
+        <p className="text-xl mt-4">
+          Tổng tiền phải thanh toán: <p className="font-bold">{total}</p>
+        </p>
 
         <button
           className={`justify-center mt-5 ${
             btnEnable ? "primary-btn" : "primary-disabled-btn"
           } `}
           onClick={(e) => {
-            console.log(cusName, service, phone);
+            console.log(cusName, service, phone, payment);
           }}
         >
           Lập hoá đơn

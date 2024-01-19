@@ -51,7 +51,10 @@ export default function Page() {
                         ? "sidebar-btn-active"
                         : "sidebar-btn"
                     }
-                    onClick={() => setActivedTab(item.key)}
+                    onClick={() => {
+                      setActivedTab(item.key)
+                      setExpand(false)
+                    }}
                   >
                     {item.icon}
                     {expand ? <p>{item.text}</p> : <p className="hidden lg:block">{item.text}</p>}

@@ -18,10 +18,10 @@ export default function SearchBar(props: {
       color="neutral"
       size="lg"
       variant="plain"
-      onChange={(e) => {
+      onChange={(e:any) => {
         setSearch(e.target.value);
       }}
-      className={` bg-blue-50 rounded-full w-[60%] h-[40px] p-4 items-center ${props.className} `}
+      className={` bg-blue-50 rounded-full w-[80%] lg:w-[40%] h-[40px] p-4 items-center ${props.className} `}
       endDecorator={
         <Button onClick={() => handleSearch(props.searchIn)} variant="plain">
           <svg
