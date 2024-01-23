@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "@mui/joy";
 import SearchBar from "@/app/component/ui/SearchBar";
+import PetsList from "./PetsList";
 
 export default function Pets() {
   const [searchShow, setSearchShow] = useState(true);
@@ -74,6 +75,7 @@ export default function Pets() {
           {searchShow ? icSearch : icClose}
         </div>
       </div>
+      <PetsList/>
     </div>
   );
 }

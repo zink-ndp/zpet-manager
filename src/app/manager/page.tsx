@@ -21,7 +21,7 @@ export default function Page() {
         <div className="flex flex-row z-10 w-full">
           <div
             className={
-              ` ${expand ? 'w-[270px]' : 'w-[auto]'} ${isAdmin ? 'h-[800px] lg:h-[720px]' : 'h-[520px] lg:h-[520px]'} lg:flex relative lg:w-56 z-30 bg-white p-4 m-4 rounded-xl shadow-xl flex-col lg:items-start items-center space-y-5 `
+              ` ${expand ? 'w-[270px]' : 'w-[auto]'} ${isAdmin ? 'h-[720px]' : 'h-[520px]'} lg:flex relative lg:w-56 z-30 bg-white p-4 m-4 rounded-xl shadow-xl flex-col lg:items-start items-center space-y-5 `
             }
           >
             <p className="hidden lg:block text-black text-2xl font-bold self-center py-4">
