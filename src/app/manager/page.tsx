@@ -4,6 +4,7 @@ import { handleLogout } from "../functions";
 import { sidebarItemsManager, sidebarItemsStaff } from "../utils/sidebarItem";
 import BackgroundMain from "../component/ui/BackgroundMain";
 import Content from "../manager/Content";
+import Image from "next/image";
 
 //icon
 import ListIcon from '@mui/icons-material/List';
@@ -29,7 +30,8 @@ export default function Page() {
             }
           >
             <p className="hidden lg:block text-black text-2xl font-bold self-center py-4">
-              <span className="text-blue-500">Z</span>Pet
+              <span className="text-blue-500">
+                Z</span>Pet
             </p>
             <button className="sidebar-btn lg:hidden"
                 onClick={(e)=>setExpand(!expand)}>
