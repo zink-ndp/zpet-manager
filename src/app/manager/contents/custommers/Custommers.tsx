@@ -1,6 +1,7 @@
 import SearchBar from "@/app/component/ui/SearchBar";
 import { Button } from "@mui/joy";
 import React, { useState } from "react";
+import CustommerList from "./CustommerList";
 
 export default function Custommers() {
   const [searchShow, setSearchShow] = useState(true);
@@ -72,6 +73,7 @@ export default function Custommers() {
           {searchShow ? icSearch : icClose}
         </div>
       </div>
+      <CustommerList/>
     </div>
   );
 }
