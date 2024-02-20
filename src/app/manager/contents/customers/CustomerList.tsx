@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { List } from "postcss/lib/list";
+import Customer from "./Customer";
 
 export default function CustommerList() {
     const [cusList, setCusList] = useState<Array<any>>();
     const [error, setError] = useState<string | null>();
-  
+
     const fetchCustomers = async () => {
       try {
         const response = await axios.get("http://localhost:3100/api/v1/customers");
@@ -21,8 +22,6 @@ export default function CustommerList() {
     fetchCustomers();
   }, []);
 
-  console.log(cusList)
-
   if (error) {
     return <div>Error fetching customers: {error}</div>;
   }
@@ -36,7 +35,7 @@ export default function CustommerList() {
         const cus: any = []
         cusList.forEach((customer)=>{
           cus.push(
-            <li>{customer.CTM_NAME}</li>
+            <Customer info={customer}/>
           )
         })
         return cus

@@ -3,7 +3,7 @@ import Dashboard from "./contents/dashboard/Dashboard";
 import MakeInvoice from "./contents/makeInvoice/MakeInvoice";
 import Invoices from "./contents/invoices/Invoices";
 import Pets from "./contents/pets/Pets";
-import Custommers from "./contents/custommers/Custommers";
+import Custommers from "./contents/customers/Customers";
 
 export default function Content(props: any) {
   switch (props.actived) {

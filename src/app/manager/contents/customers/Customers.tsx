@@ -1,7 +1,7 @@
 import SearchBar from "@/app/component/ui/SearchBar";
 import { Button } from "@mui/joy";
 import React, { useState } from "react";
-import CustommerList from "./CustommerList";
+import CustommerList from "./CustomerList";
 
 export default function Custommers() {
   const [searchShow, setSearchShow] = useState(true);
@@ -67,13 +67,20 @@ export default function Custommers() {
         <div className="flex flex-row w-auto lg:w-[1000px] items-center justify-end">
           <SearchBar
             className={`lg:flex ${searchShow ? "hidden" : "flex"} `}
-            text="Tìm kiếm thú cưng"
-            searchIn="pet"
+            text="Tìm kiếm khách hàng"
+            searchIn="cútomer"
           />
           {searchShow ? icSearch : icClose}
         </div>
       </div>
-      <CustommerList/>
+          <CustommerList />
+      {/* <div className="flex flex-col lg:flex-row">
+        <div className="flex-1 m-3">
+        </div>
+        <div className="flex-1 mx-3 mt-7">
+          <CustomerDetail />
+        </div>
+      </div> */}
     </div>
   );
 }
