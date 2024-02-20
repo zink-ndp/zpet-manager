@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { List } from "postcss/lib/list";
 
 export default function CustommerList() {
-    const [customers, setCustomers] = useState<Array<any> | null>(null);
-    const [error, setError] = useState<string | null>(null);
+    const [cusList, setCusList] = useState<Array<any>>();
+    const [error, setError] = useState<string | null>();
   
     const fetchCustomers = async () => {
       try {
-        const response = await axios.get("http://localhost:80/zpet-api/api/custommer/get/list.php");
-        const data = await response.data;
-        setCustomers(data);
+        const response = await axios.get("http://localhost:3100/api/v1/customers");
+        const data: any = await response.data.data;
+        setCusList(data);
       } catch (err:any) {
         setError(err.message);
         console.error('Error fetching customers:', err);
@@ -20,21 +21,26 @@ export default function CustommerList() {
     fetchCustomers();
   }, []);
 
+  console.log(cusList)
+
   if (error) {
     return <div>Error fetching customers: {error}</div>;
   }
 
-  if (!customers) {
+  if (!cusList) {
     return <div>Loading customers...</div>;
   }
-
   return (
-    <ul>
-      {customers.map((customer) => (
-        <li key={customer.id}>
-          {/* Display customer details */}
-        </li>
-      ))}
-    </ul>
+    <div>
+      {(()=>{
+        const cus: any = []
+        cusList.forEach((customer)=>{
+          cus.push(
+            <li>{customer.CTM_NAME}</li>
+          )
+        })
+        return cus
+      })()}
+    </div>
   );
 }
