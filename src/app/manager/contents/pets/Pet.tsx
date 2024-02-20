@@ -6,8 +6,10 @@ import ModalClose from "@mui/joy/ModalClose";
 import Sheet from "@mui/joy/Sheet";
 import PetDetail from "./PetDetail";
 
-export default function Pet() {
+export default function Pet(props:any) {
   const [modalOpen, setModalOpen] = useState(false);
+
+  const mainImg = require('../../../../pet-images/'+props.info.PIMG_LINK)
 
   return (
     <>
@@ -34,7 +36,8 @@ export default function Pet() {
       <div className="flex flex-row space-x-4 rounded-xl bg-blue-50 items-center">
         <Image
           className=" object-cover h-[80px] w-[80px] rounded-xl shadow-lg"
-          src="https://images.unsplash.com/photo-1636910826093-aafd696e3bd2?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          // src="https://images.unsplash.com/photo-1636910826093-aafd696e3bd2?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          src={mainImg}
           alt="avt"
           height={80}
           width={80}
@@ -42,7 +45,7 @@ export default function Pet() {
         <div className="flex flex-row content-center w-full">
           <div className="flex flex-col flex-1 py-3">
             <p className="text-blue-800 font-bold text-lg">
-              Chó Corgi - Bảnh tỏn
+              {props.info.PT_NAME+" "+props.info.P_SPECIE+" - "+props.info.P_NAME}
             </p>
           </div>
           <div className="hidden lg:flex flex-col flex-1 py-3 items-end justify-center">

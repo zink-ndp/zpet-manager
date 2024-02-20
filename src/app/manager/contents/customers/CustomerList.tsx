@@ -29,6 +29,7 @@ export default function CustommerList() {
   if (!cusList) {
     return <div>Loading customers...</div>;
   }
+  
   return (
     <div>
       {(()=>{
