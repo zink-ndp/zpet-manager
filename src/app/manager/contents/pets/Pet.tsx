@@ -9,7 +9,7 @@ import PetDetail from "./PetDetail";
 export default function Pet(props:any) {
   const [modalOpen, setModalOpen] = useState(false);
 
-  const mainImg = require('../../../../pet-images/'+props.info.PIMG_LINK)
+  const mainImg = require('./pet-images/'+props.info.PIMG_LINK)
 
   return (
     <>
@@ -30,13 +30,12 @@ export default function Pet(props:any) {
           }}
         >
           <ModalClose variant="plain" sx={{ m: 1 }} />
-          <PetDetail />
+          <PetDetail id={props.info.P_ID} mainImg={mainImg} />
         </Sheet>
       </Modal>
-      <div className="flex flex-row space-x-4 rounded-xl bg-blue-50 items-center">
+      <div className="flex flex-row space-x-4 rounded-xl bg-blue-100 items-center">
         <Image
           className=" object-cover h-[80px] w-[80px] rounded-xl shadow-lg"
-          // src="https://images.unsplash.com/photo-1636910826093-aafd696e3bd2?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           src={mainImg}
           alt="avt"
           height={80}

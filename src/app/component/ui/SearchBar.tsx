@@ -24,7 +24,7 @@ export default function SearchBar(props: {
       onChange={(e:any) => {
         setSearch(e.target.value);
       }}
-      className={` bg-blue-50 rounded-full w-[80%] lg:w-[40%] h-[40px] p-4 items-center ${props.className} `}
+      className={` bg-blue-100 rounded-full w-[80%] lg:w-[40%] h-[40px] p-4 items-center ${props.className} `}
       endDecorator={
         <Button className="text-blue-500 hover:scale-110"  onClick={() => handleSearch(props.searchIn)} variant="plain">
           <SearchIcon />

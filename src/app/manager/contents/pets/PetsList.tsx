@@ -5,7 +5,7 @@ import axios from 'axios'
 export default function PetsList() {
 
   const [petsList, setPetsList] = useState<Array<any>>()
-  const [error, setError] = useState<string>('')
+  const [error, setError] = useState<string | null>(null)
 
   const fetchPets = async() => {
     try {
@@ -28,8 +28,8 @@ export default function PetsList() {
 
   if (!petsList) {
     return <div>Loading pets...</div>;
-  }
-  
+  } 
+
   return (
     <div className='flex flex-col space-y-4 mt-5' >
         {(()=>{
