@@ -44,7 +44,7 @@ export default function Pet(props:any) {
         <div className="flex flex-row content-center w-full">
           <div className="flex flex-col flex-1 py-3">
             <p className="text-blue-800 font-bold text-lg">
-              {props.info.PT_NAME+" "+props.info.P_SPECIE+" - "+props.info.P_NAME}
+              {props.info.P_NAME+" - "+props.info.PT_NAME+" "+props.info.P_SPECIE}
             </p>
           </div>
           <div className="hidden lg:flex flex-col flex-1 py-3 items-end justify-center">
