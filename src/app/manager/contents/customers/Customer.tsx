@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Image from "next/image";
 import Badge from "@mui/joy/Badge";
 import Typography from "@mui/joy/Typography";
 import Face3Icon from "@mui/icons-material/Face3";
@@ -10,6 +11,7 @@ import CustomerDetail from "./CustomerDetail";
 
 export default function Customer(props: any) {
   const [modalOpen, setModalOpen] = useState(false);
+  const avatar = require('./default.png')
 
   return (
     <>
@@ -29,7 +31,13 @@ export default function Customer(props: any) {
               }}
               fontSize="xl"
             >
-              <Face3Icon className="text-blue-500" />
+              {/* <Face3Icon className="text-blue-500" /> */}
+              <Image
+                alt="avt"
+                src={avatar}
+                height={50}
+                width={50}
+              />
             </Typography>
           </Badge>
           <p className="text-blue-800 font-semibold ml-7">

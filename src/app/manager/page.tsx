@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { handleLogout } from "../functions";
 import { sidebarItemsManager, sidebarItemsStaff } from "../utils/sidebarItem";
 import BackgroundMain from "../component/ui/BackgroundMain";
 import Content from "../manager/Content";
@@ -19,6 +18,10 @@ export default function Page() {
   const roleSidebar = (
     isAdmin ? sidebarItemsManager : sidebarItemsStaff
   )
+
+  function handleLogout(){
+    
+  }
 
   return (
     <>
