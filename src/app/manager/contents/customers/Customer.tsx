@@ -40,9 +40,14 @@ export default function Customer(props: any) {
               />
             </Typography>
           </Badge>
-          <p className="text-blue-800 font-semibold ml-7">
-            {props.info.CTM_NAME}
-          </p>
+          <div className="flex flex-col">
+            <p className="text-blue-800 font-semibold ml-7">
+              {props.info.CTM_NAME}
+            </p>
+            <p className="ml-7">
+              {props.info.CTM_PHONE}
+            </p>
+          </div>
         </div>
         <div className="flex flex-row float-end space-x-3">
           <p className=" cursor-pointer text-blue-500 hover:text-blue-800 hover:scale-110">

@@ -12,7 +12,7 @@ export default function SearchBar(props: {
   const [search, setSearch] = useState("");
 
   function handleSearch(searchIn: string) {
-    console.log(search, searchIn)
+    
   }
 
   return (

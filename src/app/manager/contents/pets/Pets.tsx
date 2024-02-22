@@ -46,7 +46,7 @@ export default function Pets() {
       <div className="flex flex-row content-evenly justify-between items-center h-[60px]">
         <div className="flex flex-row">
           <p className="text-2xl font-bold">Thú cưng</p>
-          <Button variant="plain" className="ml-3">
+          <Button variant="outlined" className="ml-3">
             <p className="hidden lg:block">
                 Thêm hồ sơ
             </p>
@@ -66,14 +66,14 @@ export default function Pets() {
             </svg>
           </Button>
         </div>
-        <div className="flex flex-row w-auto lg:w-[1000px] items-center justify-end">
+        {/* <div className="flex flex-row w-auto lg:w-[1000px] items-center justify-end">
           <SearchBar
             className={`lg:flex ${searchShow ? "hidden" : "flex"} `}
             text="Tìm kiếm thú cưng"
             searchIn="pet"
           />
           {searchShow ? icSearch : icClose}
-        </div>
+        </div> */}
       </div>
       <PetsList/>
     </div>

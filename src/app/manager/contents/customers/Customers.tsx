@@ -46,7 +46,7 @@ export default function Custommers() {
       <div className="flex flex-row content-evenly justify-between items-center h-[60px]">
         <div className="flex flex-row">
           <p className="text-2xl font-bold">Khách hàng</p>
-          <Button variant="plain" className="ml-3">
+          <Button variant="outlined" className="ml-3">
             <p className="hidden lg:block">Thêm hồ sơ</p>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -64,14 +64,14 @@ export default function Custommers() {
             </svg>
           </Button>
         </div>
-        <div className="flex flex-row w-auto lg:w-[1000px] items-center justify-end">
+        {/* <div className="flex flex-row w-auto lg:w-[1000px] items-center justify-end">
           <SearchBar
             className={`lg:flex ${searchShow ? "hidden" : "flex"} `}
             text="Tìm kiếm khách hàng"
             searchIn="cútomer"
           />
           {searchShow ? icSearch : icClose}
-        </div>
+        </div> */}
       </div>
           <CustommerList />
       {/* <div className="flex flex-col lg:flex-row">
