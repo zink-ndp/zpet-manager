@@ -28,15 +28,15 @@ body {
 
 @layer components {
   .input-form {
-    @apply border border-blue-300 rounded-md py-12 h-14 text-black
+    @apply border border-blue-300 rounded-md p-3 h-14 text-black
   }
 
   .primary-btn {
-    @apply flex flex-row space-x-2 text-white lg:px-5 lg:py-3 px-3 py-3 bg-blue-500 hover:bg-blue-300 hover:scale-105 transition-all ease-in-out rounded-xl font-bold
+    @apply text-center bg-blue-500 hover:bg-blue-700 hover:scale-105 transition-all ease-in-out text-white text-lg font-semibold rounded-xl p-3
   }
 
   .primary-disabled-btn {
-    @apply flex flex-row space-x-2 text-white bg-blue-100 lg:px-5 lg:py-3 px-3 py-3 rounded-xl font-bold
+    @apply text-center bg-slate-400 transition-none hover:scale-100 text-white text-lg font-semibold rounded-xl p-3
   }
 
   .link-btn {

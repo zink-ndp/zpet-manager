@@ -6,6 +6,7 @@ import PhoneEnabledIcon from "@mui/icons-material/PhoneEnabled";
 import MailIcon from "@mui/icons-material/Mail";
 import TroubleshootIcon from "@mui/icons-material/Troubleshoot";
 import { Modal, ModalClose, Sheet } from "@mui/joy";
+import StaffDetail from "./StaffDetail";
 
 export default function Staff(props: any) {
   const staff = props.info;
@@ -41,7 +42,7 @@ export default function Staff(props: any) {
             <p className="">{staff.STF_PHONE}</p>
           </div>
         </div>
-        <div className="flex flex-col lg:flex-row float-end space-y-2 lg:space-x-3">
+        <div className="flex flex-col lg:flex-row float-end lg:space-x-3">
           <p className=" cursor-pointer text-blue-500 hover:text-blue-800 hover:scale-110">
             <PhoneEnabledIcon />
           </p>
@@ -76,7 +77,7 @@ export default function Staff(props: any) {
           }}
         >
           <ModalClose variant="plain" sx={{ m: 1 }} />
-          {/* <CustomerDetail info={props.info}/> */}
+          <StaffDetail info={props.info}/>
         </Sheet>
       </Modal>
     </>
