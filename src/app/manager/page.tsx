@@ -1,24 +1,48 @@
 "use client";
-import { useState } from "react";
-import { handleLogout } from "../functions";
+import { useEffect, useState } from "react";
 import { sidebarItemsManager, sidebarItemsStaff } from "../utils/sidebarItem";
 import BackgroundMain from "../component/ui/BackgroundMain";
 import Content from "../manager/Content";
-import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { getSessionData } from "../session/getSession";
+import { clearSession } from "../session/clearSession";
 
 //icon
 import ListIcon from '@mui/icons-material/List';
 import LogoutIcon from '@mui/icons-material/Logout';
+import NotLogged from "./NotLogged";
 
 export default function Page() {
 
   const [activedTab, setActivedTab] = useState("dashboard");
   const [expand, setExpand] = useState(false);
+  const [session, setSession] = useState<Array<any>|null>(null);
 
-  const isAdmin = true
+  const router = useRouter()
+
+  function handleLogout(){
+    clearSession("session")
+    router.replace("/login")
+  }
+
+  useEffect(()=>{
+    getSessionData().then( (value) => {
+      setSession(value)
+      console.log(value)
+    })
+  },[])
+
+  if (session==null){
+    return (
+      <NotLogged/>
+    )
+  }
+
+  const isAdmin = session[0].STF_ISMANAGER
   const roleSidebar = (
     isAdmin ? sidebarItemsManager : sidebarItemsStaff
   )
+
 
   return (
     <>
@@ -62,13 +86,14 @@ export default function Page() {
               }
               return items;
             })()}
-            <button className={`sidebar-btn-logout`} onClick={handleLogout}>
+            <button className={`sidebar-btn-logout`} 
+              onClick={handleLogout}>
               <LogoutIcon/>
               {expand ? <p>Đăng xuất</p> : <p className="hidden lg:block">Đăng xuất</p>}
             </button>
           </div>
           <div className="flex flex-col w-full">
-            <Content actived={activedTab} />
+            <Content actived={activedTab} session={session} />
           </div>
         </div>
         <BackgroundMain />

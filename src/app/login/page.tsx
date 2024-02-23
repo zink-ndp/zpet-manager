@@ -2,27 +2,40 @@
 import { useState } from "react";
 import Image from "next/image";
 import BackgroundMain from "../component/ui/BackgroundMain";
-import {
-  FormLabel,
-  Input,
-  List,
-  ListItem,
-  ListItemDecorator,
-  Radio,
-  RadioGroup,
-  Sheet,
-  styled,
-} from "@mui/joy";
-import { handleLogin } from "../functions";
+import { FormLabel, Radio, RadioGroup, Sheet, styled } from "@mui/joy";
 import React from "react";
 import { People, Person } from "@mui/icons-material";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
+import { cookies } from 'next/headers'
+import axios from "axios";
+
+import { login } from "../session/login";
 
 export default function Page() {
-  const iconDecoration = [<Person key={0}/>, <People key={1}/>]
+  const iconDecoration = [<Person key={0} />, <People key={1} />];
+
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-  const [role, setRole] = useState("");
+  const [roleName, setRoleName] = useState("");
+  const [role, setRole] = useState<number>(0);
+
+  const handleLogin = async (email: string, pw: string, role: number) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3100/api/v1/staffs/login/${email}&${pw}&${role}`
+      );
+      const data: any = await response.data.data;
+      const message: string = await response.data.message;
+      if (data.length === 0) {
+        alert(message);
+      } else {
+        login(data)
+      }
+    } catch (err: any) {
+      console.error("Error fetching info:", err);
+    }
+  };
+
   return (
     <>
       <div className=" flex justify-center h-[100vh] w-[100%] fixed z-10">
@@ -72,7 +85,7 @@ export default function Page() {
                 <Sheet
                   key={value}
                   variant="outlined"
-                  color={role==value ? 'primary' : 'neutral'}
+                  color={roleName == value ? "primary" : "neutral"}
                   sx={{
                     borderRadius: "md",
                     boxShadow: "sm",
@@ -87,9 +100,12 @@ export default function Page() {
                   <Radio
                     id={value}
                     value={value}
-                    defaultChecked={role==value}
+                    defaultChecked={false}
                     checkedIcon={<CheckCircleRoundedIcon />}
-                    onChange={()=>setRole(value)}
+                    onChange={() => {
+                      setRoleName(value);
+                      setRole(index)
+                    }}
                     className="ml-5"
                   />
                   <FormLabel htmlFor={value}>{value}</FormLabel>
@@ -99,8 +115,8 @@ export default function Page() {
             </RadioGroup>
             <button
               className=" w-full bg-blue-500 hover:bg-blue-300 bold p-3 rounded-md disabled:bg-blue-100"
-              disabled={!email || !pass || !role}
-              onClick={handleLogin}
+              disabled={!email || !pass || !roleName}
+              onClick={() => handleLogin(email, pass, role) }
             >
               Đăng nhập
             </button>

@@ -7,6 +7,7 @@ import Custommers from "./contents/customers/Customers";
 import Staffs from "./contents/staffs/Staffs";
 
 export default function Content(props: any) {
+  const session = props.session
   switch (props.actived) {
     case "dashboard":
       return <Dashboard />;
