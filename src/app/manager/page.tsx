@@ -32,13 +32,17 @@ export default function Page() {
     })
   },[])
 
-  if (session==null){
-    return (
-      <NotLogged/>
-    )
-  }
+  // if (session==null){
+  //   return (
+  //     <NotLogged/>
+  //   )
+  // }
 
-  const isAdmin = session[0].STF_ISMANAGER
+  // const isAdmin = session[0].STF_ISMANAGER
+  
+  
+  const isAdmin = true
+
   const roleSidebar = (
     isAdmin ? sidebarItemsManager : sidebarItemsStaff
   )

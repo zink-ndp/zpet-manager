@@ -8,3 +8,11 @@ export function getToday(): String{
     var todayString: String = dd + '/' + mm + '/' + yyyy;
     return todayString
 }
+
+export function formatMoney(money: number): String {
+    const formatedMoney = new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND',
+    }).format(money)
+    return formatedMoney
+}

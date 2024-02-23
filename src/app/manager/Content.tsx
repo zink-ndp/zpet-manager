@@ -5,6 +5,7 @@ import Invoices from "./contents/invoices/Invoices";
 import Pets from "./contents/pets/Pets";
 import Custommers from "./contents/customers/Customers";
 import Staffs from "./contents/staffs/Staffs";
+import Services from "./contents/services/Services";
 
 export default function Content(props: any) {
   const session = props.session
@@ -20,6 +21,8 @@ export default function Content(props: any) {
     case "custommers":
       return <Custommers />;
     case "staffs":
-      return <Staffs />
+      return <Staffs />;
+    case "services":
+      return <Services />;
   }
 }
