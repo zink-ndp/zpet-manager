@@ -1,14 +1,13 @@
 import { Button } from "@mui/joy";
 import React, { useState } from "react";
-import CustommerList from "./CustomerList";
+import StaffList from "./StaffList";
 
-export default function Custommers() {
-  
+export default function Staffs() {
   return (
     <div className="flex flex-col w-full my-4 p-5 bg-white text-black rounded-xl">
       <div className="flex flex-row content-evenly justify-between items-center h-[60px]">
         <div className="flex flex-row">
-          <p className="text-2xl font-bold">Khách hàng</p>
+          <p className="text-2xl font-bold">Nhân viên</p>
           <Button variant="outlined" className="ml-3">
             <p className="hidden lg:block">Thêm hồ sơ</p>
             <svg
@@ -28,7 +27,7 @@ export default function Custommers() {
           </Button>
         </div>
       </div>
-          <CustommerList />
+      <StaffList />
     </div>
   );
 }

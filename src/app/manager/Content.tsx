@@ -4,6 +4,7 @@ import MakeInvoice from "./contents/makeInvoice/MakeInvoice";
 import Invoices from "./contents/invoices/Invoices";
 import Pets from "./contents/pets/Pets";
 import Custommers from "./contents/customers/Customers";
+import Staffs from "./contents/staffs/Staffs";
 
 export default function Content(props: any) {
   switch (props.actived) {
@@ -17,7 +18,7 @@ export default function Content(props: any) {
       return <Pets />;
     case "custommers":
       return <Custommers />;
-    case "staff":
-      return <p className="text-black">NV</p>;
+    case "staffs":
+      return <Staffs />
   }
 }
