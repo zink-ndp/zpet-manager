@@ -28,7 +28,6 @@ export default function Page() {
   useEffect(()=>{
     getSessionData().then( (value) => {
       setSession(value)
-      console.log(value)
     })
   },[])
 
