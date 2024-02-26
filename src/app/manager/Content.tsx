@@ -6,6 +6,7 @@ import Pets from "./contents/pets/Pets";
 import Custommers from "./contents/customers/Customers";
 import Staffs from "./contents/staffs/Staffs";
 import Services from "./contents/services/Services";
+import Vouchers from "./contents/vouchers/Vouchers";
 
 export default function Content(props: any) {
   const session = props.session
@@ -24,5 +25,7 @@ export default function Content(props: any) {
       return <Staffs />;
     case "services":
       return <Services />;
+    case "vouchers":
+      return <Vouchers />;
   }
 }

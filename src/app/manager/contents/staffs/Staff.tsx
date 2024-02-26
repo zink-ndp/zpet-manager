@@ -3,14 +3,17 @@ import Image from "next/image";
 import Badge from "@mui/joy/Badge";
 import Typography from "@mui/joy/Typography";
 import PhoneEnabledIcon from "@mui/icons-material/PhoneEnabled";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
 import MailIcon from "@mui/icons-material/Mail";
 import TroubleshootIcon from "@mui/icons-material/Troubleshoot";
 import { Modal, ModalClose, Sheet } from "@mui/joy";
 import StaffDetail from "./StaffDetail";
+import StaffInvoices from "./StaffInvoices";
 
 export default function Staff(props: any) {
   const staff = props.info;
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalInvOpen, setModalInvOpen] = useState(false);
   const avatar = require("./default.png");
 
   return (
@@ -52,10 +55,18 @@ export default function Staff(props: any) {
           <p
             className=" cursor-pointer text-blue-500 hover:text-blue-800 hover:scale-110"
             onClick={() => {
-              setModalOpen(!modalOpen);
+              setModalInvOpen(!modalInvOpen);
             }}
           >
             <TroubleshootIcon />
+          </p>
+          <p
+            className=" cursor-pointer text-blue-500 hover:text-blue-800 hover:scale-110"
+            onClick={() => {
+              setModalOpen(!modalOpen);
+            }}
+          >
+            <BorderColorIcon />
           </p>
         </div>
       </div>
@@ -77,7 +88,28 @@ export default function Staff(props: any) {
           }}
         >
           <ModalClose variant="plain" sx={{ m: 1 }} />
-          <StaffDetail info={props.info}/>
+          <StaffDetail info={props.info} />
+        </Sheet>
+      </Modal>
+
+      <Modal
+        aria-labelledby="modal-title"
+        aria-describedby="modal-desc"
+        open={modalInvOpen}
+        onClose={() => setModalInvOpen(false)}
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      >
+        <Sheet
+          variant="outlined"
+          sx={{
+            minWidth: { sm: 0.8, lg: 0.5 },
+            borderRadius: "md",
+            p: 3,
+            boxShadow: "lg",
+          }}
+        >
+          <ModalClose variant="plain" sx={{ m: 1 }} />
+          <StaffInvoices info={props.info} />
         </Sheet>
       </Modal>
     </>
