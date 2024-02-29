@@ -97,13 +97,17 @@ export default function AppointmentsList() {
           <div className="flex flex-col space-y-5 mt-5 ">
             {(() => {
               const appointment: any = [];
-              if (apmList) {
+              if (apmList?.length != 0) {
                 apmList?.forEach((apm) => {
                   appointment.push(<Appointment info={apm} />);
                 });
               } else {
                 appointment.push(
-                  <p className="text-slate-700">Không có lịch hẹn nào</p>
+                  <div className="w-full h-full flex justify-center items-center mt-7">
+                    <p className="text-slate-700 self-center text-2xl">
+                      Không có lịch hẹn nào
+                    </p>
+                  </div>
                 );
               }
               return appointment;
@@ -115,13 +119,17 @@ export default function AppointmentsList() {
         <TabPanel value={1}>
           {(() => {
             const appointment: any = [];
-            if (apmList) {
+            if (apmList?.length != 0) {
               apmList?.forEach((apm) => {
                 appointment.push(<Appointment info={apm} />);
               });
             } else {
               appointment.push(
-                <p className="text-slate-700">Không có lịch hẹn nào</p>
+                <div className="w-full h-full flex justify-center items-center mt-7">
+                  <p className="text-slate-700 self-center text-2xl">
+                    Không có lịch hẹn nào
+                  </p>
+                </div>
               );
             }
             return appointment;
@@ -132,13 +140,17 @@ export default function AppointmentsList() {
         <TabPanel value={2}>
           {(() => {
             const appointment: any = [];
-            if (apmList) {
+            if (apmList?.length != 0) {
               apmList?.forEach((apm) => {
                 appointment.push(<Appointment info={apm} />);
               });
             } else {
               appointment.push(
-                <p className="text-slate-700">Không có lịch hẹn nào</p>
+                <div className="w-full h-full flex justify-center items-center mt-7">
+                  <p className="text-slate-700 self-center text-2xl">
+                    Không có lịch hẹn nào
+                  </p>
+                </div>
               );
             }
             return appointment;
@@ -149,13 +161,17 @@ export default function AppointmentsList() {
         <TabPanel value={3}>
           {(() => {
             const appointment: any = [];
-            if (apmList) {
+            if (apmList?.length != 0) {
               apmList?.forEach((apm) => {
                 appointment.push(<Appointment info={apm} />);
               });
             } else {
               appointment.push(
-                <p className="text-slate-700">Không có lịch hẹn nào</p>
+                <div className="w-full h-full flex justify-center items-center mt-7">
+                  <p className="text-slate-700 place-self-center text-2xl">
+                    Không có lịch hẹn nào
+                  </p>
+                </div>
               );
             }
             return appointment;
