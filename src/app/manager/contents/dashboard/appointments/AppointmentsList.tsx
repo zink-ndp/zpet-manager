@@ -59,20 +59,18 @@ export default function AppointmentsList() {
         >
           <Tab
             // disableIndicator
-            sx={{ borderRadius: "50px" }}
             variant={index === 0 ? "soft" : "plain"}
             color={index === 0 ? "primary" : "neutral"}
           >
             Đợi xác nhận{" "}
-            <Chip
+            {/* <Chip
               size="sm"
               variant="soft"
               color={index === 0 ? "primary" : "neutral"}
-            ></Chip>
+            ></Chip> */}
           </Tab>
           <Tab
             // disableIndicator
-            sx={{ borderRadius: "50px" }}
             variant={index === 1 ? "soft" : "plain"}
             color={index === 1 ? "primary" : "neutral"}
           >
@@ -80,11 +78,17 @@ export default function AppointmentsList() {
           </Tab>
           <Tab
             // disableIndicator
-            sx={{ borderRadius: "50px" }}
             variant={index === 2 ? "soft" : "plain"}
             color={index === 2 ? "primary" : "neutral"}
           >
             Đã hoàn thành
+          </Tab>
+          <Tab
+            // disableIndicator
+            variant={index === 3 ? "soft" : "plain"}
+            color={index === 3 ? "primary" : "neutral"}
+          >
+            Đã huỷ
           </Tab>
         </TabList>
 
@@ -100,7 +104,7 @@ export default function AppointmentsList() {
               } else {
                 appointment.push(
                   <p className="text-slate-700">Không có lịch hẹn nào</p>
-                )
+                );
               }
               return appointment;
             })()}
@@ -118,7 +122,7 @@ export default function AppointmentsList() {
             } else {
               appointment.push(
                 <p className="text-slate-700">Không có lịch hẹn nào</p>
-              )
+              );
             }
             return appointment;
           })()}
@@ -135,7 +139,24 @@ export default function AppointmentsList() {
             } else {
               appointment.push(
                 <p className="text-slate-700">Không có lịch hẹn nào</p>
-              )
+              );
+            }
+            return appointment;
+          })()}
+        </TabPanel>
+
+        {/* ĐÃ HUỶ */}
+        <TabPanel value={3}>
+          {(() => {
+            const appointment: any = [];
+            if (apmList) {
+              apmList?.forEach((apm) => {
+                appointment.push(<Appointment info={apm} />);
+              });
+            } else {
+              appointment.push(
+                <p className="text-slate-700">Không có lịch hẹn nào</p>
+              );
             }
             return appointment;
           })()}

@@ -28,6 +28,48 @@ export default function Appointment(props: any) {
     fetchServices();
   }, []);
 
+  const putAppointmentStt = async (sttId: number) => {
+    try {
+      const respone = await axios.put(
+        `http://localhost:3100/api/v1/appointments/status/${apm.APM_ID}`,
+        {
+          sttId: sttId,
+          sttDescription: denyReason,
+        }
+      );
+    } catch (error) {
+      return;
+    }
+  };
+
+  function handleDeny() {
+    putAppointmentStt(4);
+    alert("Đã từ chối lịch hẹn");
+    setMenuOpen(false);
+    setDenyInput(false);
+  }
+
+  function handleCheck() {
+    switch (apm.STT_ID) {
+      case 1:
+        putAppointmentStt(2);
+        alert("Đã xác nhận lịch hẹn");
+        setMenuOpen(false);
+        setDenyInput(false);
+        break;
+
+      case 2:
+        putAppointmentStt(3);
+        alert("Đã hoàn thành lịch hẹn");
+        setMenuOpen(false);
+        setDenyInput(false);
+        break;
+
+      default:
+        break;
+    }
+  }
+
   return (
     <>
       <div className="bg-blue-50 w-full h-[90px] justify-center rounded-2xl flex flex-row group hover:scale-105 transition-all ease-in-out">
@@ -40,11 +82,13 @@ export default function Appointment(props: any) {
         />
         <div className="flex flex-row flex-1 w-full content-between ">
           <div className="flex flex-col p-3 ml-4 justify-center">
+            <p className="text-blue-600 text-lg ">
+              {apm.APM_DATE.split("T")[0]}
+            </p>
             <p className="text-blue-800 text-xl font-bold">{apm.CTM_NAME}</p>
-            <p className="text-black text-lg">{apm.CTM_PHONE}</p>
+            <p className="text-black text-lg">{apm.APMS_STATUSDESCRIPTION}</p>
           </div>
           <div className="flex flex-col flex-1 p-3 ml-4 justify-center items-end">
-            <p className="text-black text-lg ">{apm.APM_DATE.split("T")[0]}</p>
             <p className="text-blue-800 text-xl font-semibold">
               {apm.APM_TIME.slice(0, 5)}
             </p>
@@ -67,13 +111,20 @@ export default function Appointment(props: any) {
           {(() => {
             const srvName: any = [];
             srvList?.forEach((srv, i) => {
-              srvName.push(<p className="text-slate-600">{(i+1)+" - "+srv.SRV_NAME}</p>)
+              srvName.push(
+                <p className="text-slate-600">{i + 1 + " - " + srv.SRV_NAME}</p>
+              );
             });
             return srvName;
           })()}
 
-          <div className="flex flex-row space-x-3 py-2 px-4 self-center">
-            <button className="hover:scale-125">
+          <div className={`  ${apm.STT_ID==3 ? "hidden" : "flex"}  flex-row space-x-3 py-2 px-4 self-center`}>
+            <button
+              className="hover:scale-125"
+              onClick={() => {
+                handleCheck();
+              }}
+            >
               <CheckIcon
                 className={` ${
                   denyInput ? "text-neutral-300" : "text-green-600"
@@ -89,9 +140,9 @@ export default function Appointment(props: any) {
               type="text"
             />
             <button
-              className="hover:scale-125"
+              className={` hover:scale-125`}
               onClick={() => {
-                denyInput ? alert(denyReason) : setDenyInput(!denyInput);
+                denyInput ? handleDeny() : setDenyInput(!denyInput);
               }}
             >
               <CloseIcon
