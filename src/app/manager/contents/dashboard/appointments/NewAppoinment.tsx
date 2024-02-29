@@ -75,14 +75,32 @@ export default function NewAppoinment() {
   }, [phone, cusName, service, dateTime]);
 
   function handleAddAppointment() {
-    const date = dateTime.$D + "/" + (dateTime.$M + 1) + "/" + dateTime.$y;
+    const date = dateTime.$y + "/" + (dateTime.$M + 1) + "/" + dateTime.$D;
     const time = dateTime.$H + ":" + dateTime.$m;
-    const cusId = cusName?.split(":")[1]
-    const srvs: string[] = []
+    const cusId = cusName?.split(":")[1];
+    const srvs: string[] = [];
     service.forEach((srv: string) => {
-      srvs.push(srv.split(":")[1])
+      srvs.push(srv.split(":")[1]);
     });
-    console.log(date, time, cusId, srvs, note);
+
+    const postNewAppointment = async () => {
+      try {
+        const response = await axios.post(
+          "http://localhost:3100/api/v1/appointments/",
+          {
+            cusId: cusId,
+            date: date,
+            time: time,
+            note: note,
+            services: srvs,
+          }
+        );
+        alert("Tạo thành công!");
+      } catch (error) {
+        alert(error);
+      }
+    };
+    postNewAppointment();
   }
 
   return (
@@ -138,8 +156,8 @@ export default function NewAppoinment() {
       <Input
         className="w-full h-[50px]"
         placeholder="Ghi chú cho cửa hàng…"
-        onChange={(e: any)=>{
-          setNote(e.target.value)
+        onChange={(e: any) => {
+          setNote(e.target.value);
         }}
       />
       <button

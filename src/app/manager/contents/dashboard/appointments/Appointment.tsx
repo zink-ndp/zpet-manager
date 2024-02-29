@@ -1,14 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
+import axios from "axios";
 
 export default function Appointment(props: any) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [denyInput, setDenyInput] = useState(false);
-  const [denyReason, setDenyReason] = useState('');
+  const [denyReason, setDenyReason] = useState("");
 
+  const [srvList, setSrvList] = useState<Array<any>>();
+
+  const apm = props.info;
+
+  const fetchServices = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3100/api/v1/appointments/services/${apm.APM_ID}`
+      );
+      const data = await response.data.data;
+      setSrvList(data);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
 
   return (
     <>
@@ -22,12 +40,14 @@ export default function Appointment(props: any) {
         />
         <div className="flex flex-row flex-1 w-full content-between ">
           <div className="flex flex-col p-3 ml-4 justify-center">
-            <p className="text-blue-800 text-xl font-bold">{props.name}</p>
-            <p className="text-black text-lg ">{props.service}</p>
+            <p className="text-blue-800 text-xl font-bold">{apm.CTM_NAME}</p>
+            <p className="text-black text-lg">{apm.CTM_PHONE}</p>
           </div>
           <div className="flex flex-col flex-1 p-3 ml-4 justify-center items-end">
-            <p className="text-black text-lg ">24/11/2022</p>
-            <p className="text-blue-800 text-xl font-semibold">14:00</p>
+            <p className="text-black text-lg ">{apm.APM_DATE.split("T")[0]}</p>
+            <p className="text-blue-800 text-xl font-semibold">
+              {apm.APM_TIME.slice(0, 5)}
+            </p>
           </div>
         </div>
         <button
@@ -42,33 +62,43 @@ export default function Appointment(props: any) {
         <div
           className={` ${
             menuOpen ? "flex right-12" : "hidden"
-          } flex-row space-x-3 py-2 px-4 bg-white shadow-xl rounded-full absolute h-[55px] mt-4 transition-all ease-in-out`}
+          } flex-col bg-white p-4 shadow-2xl rounded-xl w-auto absolute mt-4 transition-all ease-in-out`}
         >
-          <button className="hover:scale-125">
-            <CheckIcon
+          {(() => {
+            const srvName: any = [];
+            srvList?.forEach((srv, i) => {
+              srvName.push(<p className="text-slate-600">{(i+1)+" - "+srv.SRV_NAME}</p>)
+            });
+            return srvName;
+          })()}
+
+          <div className="flex flex-row space-x-3 py-2 px-4 self-center">
+            <button className="hover:scale-125">
+              <CheckIcon
+                className={` ${
+                  denyInput ? "text-neutral-300" : "text-green-600"
+                } `}
+              />
+            </button>
+            <input
               className={` ${
-                denyInput ? "text-neutral-300" : "text-green-600"
-              } `}
+                denyInput ? "w-[150px]" : "hidden w-0"
+              } bg-blue-50 rounded-full px-3 transition-all ease-in-out`}
+              onChange={(e) => setDenyReason(e.target.value)}
+              placeholder="Lí do từ chối"
+              type="text"
             />
-          </button>
-          <input
-            className={` ${
-              denyInput ? "w-[150px]" : "hidden w-0"
-            } bg-blue-50 rounded-full px-3 transition-all ease-in-out`}
-            onChange={(e)=>setDenyReason(e.target.value)}
-            placeholder="Lí do từ chối"
-            type="text"
-          />
-          <button
-            className="hover:scale-125"
-            onClick={() => {
-              denyInput ? alert(denyReason) : setDenyInput(!denyInput);
-            }}
-          >
-            <CloseIcon
-              className={`text-red-600 ${denyInput ? "scale-125" : ""} `}
-            />
-          </button>
+            <button
+              className="hover:scale-125"
+              onClick={() => {
+                denyInput ? alert(denyReason) : setDenyInput(!denyInput);
+              }}
+            >
+              <CloseIcon
+                className={`text-red-600 ${denyInput ? "scale-125" : ""} `}
+              />
+            </button>
+          </div>
         </div>
       </div>
     </>
