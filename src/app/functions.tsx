@@ -16,3 +16,16 @@ export function formatMoney(money: number): String {
     }).format(money)
     return formatedMoney
 }
+
+export function convertDateToUTC(isoDateString: string): String {
+  const date = new Date(isoDateString);
+  // Lấy các thành phần ngày tháng
+  const day = date.getUTCDate();
+  const month = date.getUTCMonth() + 1; // Tháng tính từ 0 (0 - 11)
+  const year = date.getUTCFullYear();
+  const hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
+  // Kết quả
+  const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}`;
+  return formattedDate
+}

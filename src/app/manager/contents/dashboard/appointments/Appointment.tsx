@@ -84,13 +84,13 @@ export default function Appointment(props: any) {
 
   return (
     <>
-      <div className="bg-blue-50 w-full h-auto justify-center rounded-2xl flex flex-row group hover:scale-105 transition-all ease-in-out">
+      <div className="bg-blue-100 mt-3 w-full h-[100px] justify-center rounded-2xl flex flex-row group hover:scale-105 transition-all ease-in-out">
         <Image
           className=" rounded-2xl object-cover h-[90px] w-[90px] shadow-lg"
           src="https://images.unsplash.com/photo-1636910826093-aafd696e3bd2?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="avt"
-          height={80}
-          width={80}
+          height={100}
+          width={100}
         />
         <div className="flex flex-row flex-1 w-full content-between ">
           <div className="flex flex-col p-3 ml-4 justify-center">
@@ -98,7 +98,7 @@ export default function Appointment(props: any) {
               {apm.APM_DATE.split("T")[0]}
             </p>
             <p className="text-blue-800 text-xl font-bold">{apm.CTM_NAME}</p>
-            <p className="text-black text-lg">{apm.APMS_STATUSDESCRIPTION}</p>
+            {/* <p className="text-black text-lg">{apm.APMS_STATUSDESCRIPTION}</p> */}
           </div>
           <div className="flex flex-col flex-1 p-3 ml-4 justify-center items-end">
             <p className="text-blue-800 text-xl font-semibold">
