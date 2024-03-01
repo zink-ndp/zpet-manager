@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Autocomplete from "@mui/joy/Autocomplete";
 import { Input, Textarea } from "@mui/joy";
 import { DateTimePicker, MobileDateTimePicker } from "@mui/x-date-pickers";
@@ -9,6 +10,8 @@ import axios from "axios";
 
 export default function NewAppoinment() {
   const testOption = ["opt1", "opt2", "opt3"];
+
+  const router = useRouter()
 
   const [dateTime, setDateTime] = useState<any>();
   const [phone, setPhone] = useState<String | null>("");
@@ -96,6 +99,7 @@ export default function NewAppoinment() {
           }
         );
         alert("Tạo thành công!");
+        router.refresh()
       } catch (error) {
         alert(error);
       }

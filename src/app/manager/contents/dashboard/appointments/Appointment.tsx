@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CheckIcon from "@mui/icons-material/Check";
@@ -6,9 +7,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import PageviewOutlinedIcon from "@mui/icons-material/PageviewOutlined";
 import { Modal, ModalClose, Sheet } from "@mui/joy";
 import axios from "axios";
+import { convertDateToUTC } from "@/app/functions";
 import AppointmentDetail from "./AppointmentDetail";
 
 export default function Appointment(props: any) {
+  const router = useRouter();
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [denyInput, setDenyInput] = useState(false);
   const [denyReason, setDenyReason] = useState("");
@@ -35,7 +39,7 @@ export default function Appointment(props: any) {
 
   const putAppointmentStt = async (sttId: number, sttDescription: string) => {
     try {
-      const respone = await axios.put(
+      const response = await axios.put(
         `http://localhost:3100/api/v1/appointments/status/${apm.APM_ID}`,
         {
           sttId: sttId,
@@ -52,6 +56,7 @@ export default function Appointment(props: any) {
     alert("Đã từ chối lịch hẹn");
     setMenuOpen(false);
     setDenyInput(false);
+    router.refresh();
   }
 
   function handleCheck() {
@@ -61,6 +66,7 @@ export default function Appointment(props: any) {
         alert("Đã xác nhận lịch hẹn");
         setMenuOpen(false);
         setDenyInput(false);
+        router.refresh();
         break;
 
       case 2:
@@ -68,6 +74,7 @@ export default function Appointment(props: any) {
         alert("Đã hoàn thành lịch hẹn");
         setMenuOpen(false);
         setDenyInput(false);
+        router.refresh();
         break;
 
       default:
@@ -95,7 +102,7 @@ export default function Appointment(props: any) {
         <div className="flex flex-row flex-1 w-full content-between ">
           <div className="flex flex-col p-3 ml-4 justify-center">
             <p className="text-blue-600 text-lg ">
-              {apm.APM_DATE.split("T")[0]}
+              {convertDateToUTC(apm.APM_DATE).split(" ")[0]}
             </p>
             <p className="text-blue-800 text-xl font-bold">{apm.CTM_NAME}</p>
             {/* <p className="text-black text-lg">{apm.APMS_STATUSDESCRIPTION}</p> */}
@@ -124,12 +131,14 @@ export default function Appointment(props: any) {
 
           <div className={`flex flex-row space-x-3 py-2 px-4 self-center`}>
             <button
-              className="hover:scale-125"
+              className={` ${
+                denyInput ? "text-neutral-300 cursor-not-allowed" : "text-blue-600 hover:scale-125"
+              } `}
               onClick={() => {
                 setModalOpen(!modalOpen);
               }}
             >
-              <PageviewOutlinedIcon className="text-blue-500" />
+              <PageviewOutlinedIcon />
             </button>
             <button
               className={`  ${
@@ -141,14 +150,14 @@ export default function Appointment(props: any) {
             >
               <CheckIcon
                 className={` ${
-                  denyInput ? "text-neutral-300" : "text-green-600"
+                  denyInput ? "text-neutral-300 cursor-not-allowed" : "text-green-600"
                 } `}
               />
             </button>
             <input
               className={`  ${
                 denyInput ? "w-[150px]" : "hidden w-0"
-              } bg-blue-50 rounded-full px-3 transition-all ease-in-out`}
+              } bg-blue-100 rounded-full px-3 py-2 transition-all ease-in-out`}
               onChange={(e) => setDenyReason(e.target.value)}
               placeholder="Lí do từ chối"
               type="text"
