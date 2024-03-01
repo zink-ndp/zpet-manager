@@ -3,9 +3,11 @@ import Autocomplete, { createFilterOptions } from "@mui/joy/Autocomplete";
 import Checkbox from "@mui/joy/Checkbox";
 import { getToday } from "@/app/functions";
 import { getSessionData } from "@/app/session/getSession";
-import { List, ListDivider, ListItem, Radio, RadioGroup } from "@mui/joy";
+import { Button, List, ListDivider, ListItem, Radio, RadioGroup } from "@mui/joy";
 import axios from "axios";
 import { formatMoney } from "@/app/functions";
+import { PlusIcon } from "@heroicons/react/16/solid";
+import { PlusOne } from "@mui/icons-material";
 
 export default function MakeInvoice() {
   const testOption = ["opt1", "opt2", "opt3"];
@@ -16,17 +18,19 @@ export default function MakeInvoice() {
   const [cusInfo, setCusInfo] = useState<Array<any> | null>(null);
   const [petList, setPetList] = useState<Array<any> | null>(null);
   const [srvList, setSrvList] = useState<Array<any> | null>(null);
+  const [adrList, setAdrList] = useState<Array<any> | null>(null);
 
-  function resetAll(){
-    setPhone('')
-    setCusName('')
-    setPet('')
-    setService([])
-    setShipPet(false)
-    setAddress('')
-    setPrice(0)
-    setTotal(0)
-    setBtnDisabled(true)
+  function resetAll() {
+    setPhone("");
+    setCusName("");
+    setPet("");
+    setService([]);
+    setAdrList([]);
+    setShipPet(false);
+    setAddress("");
+    setPrice(0);
+    setTotal(0);
+    setBtnDisabled(true);
   }
 
   const [phone, setPhone] = useState<String | null>("");
@@ -79,6 +83,16 @@ export default function MakeInvoice() {
     } catch (err: any) {}
   };
 
+  const fetchAddress = async (id: String) => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3100/api/v1/customers/" + id + "/address"
+      );
+      const data: any = await response.data.data;
+      setAdrList(data);
+    } catch (error) {}
+  };
+
   useEffect(() => {
     getSessionData().then((value) => {
       setSession(value);
@@ -105,6 +119,7 @@ export default function MakeInvoice() {
     if (cusInfo) {
       setCusName(cusInfo[0].CTM_NAME + " - Mã:" + cusInfo[0].CTM_ID);
       fetchPets(cusInfo[0].CTM_ID);
+      fetchAddress(cusInfo[0].CTM_ID);
     }
   }, [cusInfo]);
 
@@ -120,9 +135,9 @@ export default function MakeInvoice() {
     });
   }, [service]);
 
-  useEffect(()=>{
-    setTotal(price)
-  },[price])
+  useEffect(() => {
+    setTotal(price);
+  }, [price]);
 
   useEffect(() => {
     if (!cusName || !pet || !service) setBtnDisabled(true);
@@ -137,6 +152,21 @@ export default function MakeInvoice() {
   const srvNameList: any = [];
   srvList?.forEach((srv) => {
     srvNameList.push(srv.SRV_NAME + "-Mã:" + srv.SRV_ID);
+  });
+
+  const adrNameList: any = [];
+  adrList?.forEach((adr) => {
+    adrNameList.push(
+      adr.ADR_RECEIVERNAME +
+        " - " +
+        adr.ADR_NOTE +
+        ", " +
+        adr.ADR_WARD +
+        ", " +
+        adr.ADR_DISTRICT +
+        ", " +
+        adr.ADR_PROVINCE
+    );
   });
 
   function handleMakeInvoice() {
@@ -162,9 +192,9 @@ export default function MakeInvoice() {
         const id = srv.split(":")[1].toString();
         srvId.push(id);
       });
-      const tt = total
+      const tt = total;
       console.log(time, stfId, cusId, petId, srvId, tt);
-      resetAll()
+      resetAll();
     } else console.log("Chua du thong tin");
   }
 
@@ -241,13 +271,16 @@ export default function MakeInvoice() {
         />
         {shipPet && (
           <div>
-            <p className="text-lg mt-4">Địa chỉ:</p>
+            <p className="text-lg mt-4">
+              Địa chỉ: <Button variant="outlined"><PlusOne/></Button>
+            </p>
             <Autocomplete
               placeholder="Địa chỉ"
-              options={testOption}
+              options={adrNameList}
               className="w-full h-[50px]"
             />
-            <p className="text-md mt-2">Phí vận chuyển: {price}đ</p>
+
+            <p className="text-md mt-2">Phí vận chuyển: {formatMoney(price)}</p>
           </div>
         )}
 
@@ -292,7 +325,8 @@ export default function MakeInvoice() {
 
         <ListDivider sx={{ marginTop: "15px" }} />
         <p className="text-xl mt-4">
-          Tổng tiền phải thanh toán: <p className="font-bold">{formatMoney(total)}</p>
+          Tổng tiền phải thanh toán:{" "}
+          <p className="font-bold">{formatMoney(total)}</p>
         </p>
 
         <button
