@@ -1,13 +1,23 @@
 import React, { useEffect, useState } from "react";
 import Autocomplete, { createFilterOptions } from "@mui/joy/Autocomplete";
 import Checkbox from "@mui/joy/Checkbox";
+import Modal from "@mui/joy/Modal";
+import ModalClose from "@mui/joy/ModalClose";
+import Sheet from "@mui/joy/Sheet";
 import { getToday } from "@/app/functions";
 import { getSessionData } from "@/app/session/getSession";
-import { Button, List, ListDivider, ListItem, Radio, RadioGroup } from "@mui/joy";
+import {
+  Button,
+  List,
+  ListDivider,
+  ListItem,
+  Radio,
+  RadioGroup,
+} from "@mui/joy";
 import axios from "axios";
 import { formatMoney } from "@/app/functions";
-import { PlusIcon } from "@heroicons/react/16/solid";
-import { PlusOne } from "@mui/icons-material";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import AddAddress from "./AddAddress";
 
 export default function MakeInvoice() {
   const testOption = ["opt1", "opt2", "opt3"];
@@ -32,7 +42,7 @@ export default function MakeInvoice() {
     setTotal(0);
     setBtnDisabled(true);
   }
-
+  const [modalOpen, setModalOpen] = useState(false);
   const [phone, setPhone] = useState<String | null>("");
   const [cusName, setCusName] = useState<String | null>("");
   const [pet, setPet] = useState<String | null>("");
@@ -272,7 +282,10 @@ export default function MakeInvoice() {
         {shipPet && (
           <div>
             <p className="text-lg mt-4">
-              Địa chỉ: <Button variant="outlined"><PlusOne/></Button>
+              Địa chỉ:{" "}
+              <Button variant="plain" onClick={()=>{setModalOpen(!modalOpen)}}>
+                <AddOutlinedIcon className="text-sm text-blue-500" />
+              </Button>
             </p>
             <Autocomplete
               placeholder="Địa chỉ"
@@ -283,45 +296,6 @@ export default function MakeInvoice() {
             <p className="text-md mt-2">Phí vận chuyển: {formatMoney(price)}</p>
           </div>
         )}
-
-        {/* {(() => {
-          if (price)
-            return (
-              <>
-                <p className="text-lg mt-4">Hình thức thanh toán:</p>
-                <RadioGroup
-                  aria-labelledby="example-payment-channel-label"
-                  overlay
-                  name="example-payment-channel"
-                  defaultValue="Paypal"
-                >
-                  <List
-                    component="div"
-                    variant="outlined"
-                    orientation={"vertical"}
-                    sx={{
-                      borderRadius: "sm",
-                      boxShadow: "sm",
-                    }}
-                  >
-                    {["Tiền mặt", "QR Code"].map((value, index) => (
-                      <React.Fragment key={value}>
-                        {index !== 0 && <ListDivider />}
-                        <ListItem>
-                          <Radio
-                            id={value}
-                            value={value}
-                            label={value}
-                            onChange={() => setPayment(value)}
-                          />
-                        </ListItem>
-                      </React.Fragment>
-                    ))}
-                  </List>
-                </RadioGroup>
-              </>
-            );
-        })()} */}
 
         <ListDivider sx={{ marginTop: "15px" }} />
         <p className="text-xl mt-4">
@@ -339,6 +313,26 @@ export default function MakeInvoice() {
           Lập hoá đơn
         </button>
       </div>
+      <Modal
+        aria-labelledby="modal-title"
+        aria-describedby="modal-desc"
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      >
+        <Sheet
+          variant="outlined"
+          sx={{
+            minWidth: { sm: 0.8, lg: 0.5 },
+            borderRadius: "md",
+            p: 3,
+            boxShadow: "lg",
+          }}
+        >
+          <ModalClose variant="plain" sx={{ m: 1 }} />
+          <AddAddress />
+        </Sheet>
+      </Modal>
     </>
   );
 }
