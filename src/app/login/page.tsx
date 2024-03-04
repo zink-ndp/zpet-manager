@@ -26,7 +26,7 @@ export default function Page() {
       );
       const data: any = await response.data.data;
       const message: string = await response.data.message;
-      if (data.length === 0) {
+      if (data.length == 0 ) {
         alert(message);
       } else {
         login(data)

@@ -39,7 +39,6 @@ export default function Page() {
 
   // const isAdmin = session[0].STF_ISMANAGER
   
-  
   const isAdmin = true
 
   const roleSidebar = (
