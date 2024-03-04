@@ -37,7 +37,7 @@ export default function MakeInvoice() {
     setService([]);
     setAdrList([]);
     setShipPet(false);
-    setAddress("");
+    setAddress(null);
     setPrice(0);
     setTotal(0);
     setBtnDisabled(true);
@@ -48,7 +48,9 @@ export default function MakeInvoice() {
   const [pet, setPet] = useState<String | null>("");
   const [service, setService] = useState<String[] | any>();
   const [shipPet, setShipPet] = useState(false);
-  const [address, setAddress] = useState<String | null>("");
+  const [address, setAddress] = useState<Number | null>(null);
+  const [distance, setDistance] = useState(0);
+  const [shipPrice, setShipPrice] = useState(0);
   const [price, setPrice] = useState(0);
   const [total, setTotal] = useState(0);
   const [btnDisabled, setBtnDisabled] = useState(true);
@@ -103,6 +105,16 @@ export default function MakeInvoice() {
     } catch (error) {}
   };
 
+  const fetchShippingFee = async (dist: Number) => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3100/api/v1/invoices/shipfee/"+dist
+      );
+      const data: any = await response.data.data;
+      setShipPrice(data[0].SF_FEE);
+    } catch (error) {}
+  };
+
   useEffect(() => {
     getSessionData().then((value) => {
       setSession(value);
@@ -145,6 +157,13 @@ export default function MakeInvoice() {
     });
   }, [service]);
 
+  useEffect(()=>{
+    if (address) {
+      fetchShippingFee(distance)
+      console.log(distance, address)
+    }
+  },[address])
+
   useEffect(() => {
     setTotal(price);
   }, [price]);
@@ -175,7 +194,12 @@ export default function MakeInvoice() {
         ", " +
         adr.ADR_DISTRICT +
         ", " +
-        adr.ADR_PROVINCE
+        adr.ADR_PROVINCE +
+        " - Mã:" +
+        adr.ADR_ID +
+        ":" +
+        adr.ADR_DISTANCE +
+        "km"
     );
   });
 
@@ -291,9 +315,15 @@ export default function MakeInvoice() {
               placeholder="Địa chỉ"
               options={adrNameList}
               className="w-full h-[50px]"
+              onInputChange={(e, nValue)=>{
+                const adrId = parseInt(nValue.split(":")[1])
+                const dist = parseInt(nValue.split(":")[2])
+                setAddress(adrId)
+                setDistance(dist)
+              }}
             />
 
-            <p className="text-md mt-2">Phí vận chuyển: {formatMoney(price)}</p>
+            <p className="text-md mt-2">Phí vận chuyển: {formatMoney(shipPrice)}</p>
           </div>
         )}
 
