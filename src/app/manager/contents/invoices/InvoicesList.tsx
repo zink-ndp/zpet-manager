@@ -1,57 +1,58 @@
-import React, { useEffect, useMemo, useState } from "react";
-import Pet from "./Pet";
-import axios from "axios";
 import { Button, Input } from "@mui/joy";
-import ReplayIcon from '@mui/icons-material/Replay';
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+import ReplayIcon from "@mui/icons-material/Replay";
+import Invoice from "./Invoice";
 
-export default function PetsList() {
-  const [petsList, setPetsList] = useState<Array<any>>();
-  const [allPets, setAllPets] = useState<Array<any>>();
+export default function InvoicesList() {
+  const [invsList, setInvsList] = useState<Array<any>>();
+  const [allInvs, setAllInvs] = useState<Array<any>>();
   const [error, setError] = useState<string | null>(null);
 
-  const fetchPets = async () => {
+  const fetchInvoices = async () => {
     try {
-      const response = await axios.get("http://localhost:3100/api/v1/pets");
+      const response = await axios.get("http://localhost:3100/api/v1/invoices");
       const data: any = await response.data.data;
-      setPetsList(data);
-      setAllPets(data)
+      setInvsList(data);
+      setAllInvs(data);
     } catch (err: any) {
       setError(err);
       console.error("Error fetching pets:", err);
     }
   };
-
   const searchApi = async (s: string) => {
     try {
-      const response = await axios.get(`http://localhost:3100/api/v1/pets/search/${s}`);
+      const response = await axios.get(
+        `http://localhost:3100/api/v1/invoices/search/${s}`
+      );
       const data: any = await response.data.data;
-      setPetsList(data);
+      setInvsList(data);
     } catch (err: any) {
       setError(err);
-      console.error("Error fetching pets:", err);
+      console.error("Error fetching invoice:", err);
     }
   };
 
   useEffect(() => {
-    fetchPets();
+    fetchInvoices();
   }, []);
 
   if (error) {
-    return <div>Error fetching pets: {error}</div>;
+    return <div>Error fetching invoices: {error}</div>;
   }
 
-  if (!petsList) {
-    return <div>Loading pets...</div>;
+  if (!invsList) {
+    return <div>Loading invoices...</div>;
   }
 
   function reloadList(): void {
-    setPetsList(allPets)
+    setInvsList(allInvs);
   }
 
   return (
     <div className="flex flex-col space-y-4 mt-5">
       <Input
-        placeholder="Tìm kiếm tên, loại, giống thú cưng"
+        placeholder="Tìm kiếm mã, ngày lập, ... hoá đơn"
         color="neutral"
         size="lg"
         variant="outlined"
@@ -62,7 +63,7 @@ export default function PetsList() {
         className={` rounded-full self-end w-full lg:w-[30%] h-[40px] p-4 items-center mb-3`}
         endDecorator={
           <Button
-          className="text-blue-500 hover:scale-110 rounded-full space-x-2"
+            className="text-blue-500 hover:scale-110 rounded-full space-x-2"
             onClick={() => reloadList()}
             variant="solid"
           >
@@ -72,11 +73,13 @@ export default function PetsList() {
         }
       />
       {(() => {
-        const pet: any = [];
-        petsList.forEach((p) => {
-          pet.push(<Pet info={p} />);
-        });
-        return pet;
+        var inv: any = [];
+        if (invsList) {
+          invsList.forEach((i) => {
+            inv.push(<Invoice info={i} />);
+          });
+        }
+        return inv;
       })()}
     </div>
   );
