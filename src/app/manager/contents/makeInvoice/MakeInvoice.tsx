@@ -238,7 +238,7 @@ export default function MakeInvoice() {
             sfId: shipId,
             stfId: stfId,
             adrId: address,
-            total: total,
+            total: price,
             time: time,
             services: srvId,
           }
