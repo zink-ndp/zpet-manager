@@ -4,6 +4,7 @@ import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
 import Sheet from "@mui/joy/Sheet";
 import PetDetail from "../pets/PetDetail";
+import { formatMoney } from "@/app/functions";
 
 var date_format = require("date-format");
 
@@ -153,7 +154,7 @@ export default function CustomerDetail(props: any) {
             invsList?.forEach((i, idx)=>{
               invs.push(
                 <p className="text-black text-lg">
-                  {(idx+1)+" - Mã hoá đơn:"+i.INV_ID+": - "+i.INV_CREATEDAT+" - Tổng tiền:"+i.INV_TOTAL}
+                  {(idx+1)+" - Mã hoá đơn:"+i.INV_ID+": - "+i.INV_CREATEDAT+" - Tổng tiền:"+formatMoney(i.INV_TOTAL)}
                 </p>
               )
             })
