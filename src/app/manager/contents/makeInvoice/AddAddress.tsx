@@ -16,8 +16,7 @@ import {
 } from "leaflet";
 import axios from "axios";
 
-export default function AddAddress() {
-
+export default function AddAddress(props: any) {
   const shopPosition = [10.030183, 105.772163] as LatLngTuple;
 
   const [position, setPosition] = useState<LatLngTuple>([0, 0]);
@@ -38,24 +37,23 @@ export default function AddAddress() {
   }
 
   const optionsDistance = {
-    method: 'GET',
-    url: 'https://distance-calculator8.p.rapidapi.com/calc',
+    method: "GET",
+    url: "https://trueway-matrix.p.rapidapi.com/CalculateDrivingMatrix",
     params: {
-      startLatitude: shopPosition[0].toString(),
-      startLongitude: shopPosition[1].toString(),
-      endLatitude: position[0].toString(),
-      endLongitude: position[1].toString()
+      origins: shopPosition[0].toString() + ", " + shopPosition[1].toString(),
+      destinations: position[0].toString() + ", " + position[1].toString(),
     },
     headers: {
-      'X-RapidAPI-Key': '01ea8dbf4emsh88d702ce239956ap1f9cd9jsn6ce2c628f36f',
-      'X-RapidAPI-Host': 'distance-calculator8.p.rapidapi.com'
-    }
+      "X-RapidAPI-Key": "01ea8dbf4emsh88d702ce239956ap1f9cd9jsn6ce2c628f36f",
+      "X-RapidAPI-Host": "trueway-matrix.p.rapidapi.com",
+    },
   };
 
   const fetchDistance = async () => {
     try {
       const response = await axios.request(optionsDistance);
-      setDistance(response.data.body.distance.kilometers);
+      const dist = parseFloat(response.data.distances[0][0]) / 1000;
+      setDistance(dist);
     } catch (error) {
       console.error(error);
     }
@@ -95,6 +93,38 @@ export default function AddAddress() {
     fetchInfo();
   }, [position]);
 
+  async function handleAddAdr() {
+    console.log(
+      props.cusId,
+      receiver,
+      province,
+      district,
+      ward,
+      note,
+      position[0],
+      position[1],
+      distance
+    );
+    try {
+      const response = await axios.post(
+        "http://localhost:3100/api/v1/customers/" + props.cusId + "/address",
+        {
+          receiver: receiver,
+          province: province,
+          district: district,
+          ward: ward,
+          note: note,
+          lat: position[0],
+          lng: position[1],
+          dist: distance,
+        }
+      )
+      alert("Thêm thành công!")
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <>
       <div className="flex flex-col mt-8">
@@ -133,8 +163,8 @@ export default function AddAddress() {
             className="input-form w-auto font-normal ml-4 flex-1"
             id=""
             value={receiver}
-            onChange={(e)=>{
-              setReceiver(e.target.value)
+            onChange={(e) => {
+              setReceiver(e.target.value);
             }}
           />
         </div>
@@ -148,8 +178,8 @@ export default function AddAddress() {
             className="input-form w-auto font-normal ml-4 flex-1"
             id=""
             value={province}
-            onChange={(e)=>{
-              setProvince(e.target.value)
+            onChange={(e) => {
+              setProvince(e.target.value);
             }}
           />
         </div>
@@ -163,8 +193,8 @@ export default function AddAddress() {
             className="input-form w-auto font-normal ml-4 flex-1"
             id=""
             value={district}
-            onChange={(e)=>{
-              setDistrict(e.target.value)
+            onChange={(e) => {
+              setDistrict(e.target.value);
             }}
           />
         </div>
@@ -178,8 +208,8 @@ export default function AddAddress() {
             id=""
             className="input-form w-auto font-normal ml-4 flex-1"
             value={ward}
-            onChange={(e)=>{
-              setWard(e.target.value)
+            onChange={(e) => {
+              setWard(e.target.value);
             }}
           />
         </div>
@@ -191,12 +221,14 @@ export default function AddAddress() {
             id=""
             className="input-form w-auto font-normal ml-4 flex-1"
             value={note}
-            onChange={(e)=>{
-              setNote(e.target.value)
+            onChange={(e) => {
+              setNote(e.target.value);
             }}
           />
         </div>
-        <button className="primary-btn mt-5">Thêm địa chỉ mới</button>
+        <button onClick={handleAddAdr} className="primary-btn mt-5">
+          Thêm địa chỉ mới
+        </button>
       </div>
     </>
   );

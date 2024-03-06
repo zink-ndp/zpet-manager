@@ -108,7 +108,7 @@ export default function MakeInvoice() {
   const fetchShippingFee = async (dist: Number) => {
     try {
       const response = await axios.get(
-        "http://localhost:3100/api/v1/invoices/shipfee/"+dist
+        "http://localhost:3100/api/v1/invoices/shipfee/" + dist
       );
       const data: any = await response.data.data;
       setShipPrice(data[0].SF_FEE);
@@ -157,16 +157,16 @@ export default function MakeInvoice() {
     });
   }, [service]);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (address) {
-      fetchShippingFee(distance)
-      console.log(distance, address)
+      fetchShippingFee(distance);
+      console.log(distance, address);
     }
-  },[address])
+  }, [address]);
 
   useEffect(() => {
-    setTotal(price);
-  }, [price]);
+    setTotal(price + shipPrice);
+  }, [price, shipPrice]);
 
   useEffect(() => {
     if (!cusName || !pet || !service) setBtnDisabled(true);
@@ -295,6 +295,7 @@ export default function MakeInvoice() {
           <p className="font-bold">{formatMoney(price)}</p>
         </p>
         <Checkbox
+          disabled={cusName ? false : true}
           className="text-xl mt-4 font-semi-bold"
           label="Áp dụng giao thú cưng tận nhà:"
           size="lg"
@@ -307,7 +308,12 @@ export default function MakeInvoice() {
           <div>
             <p className="text-lg mt-4">
               Địa chỉ:{" "}
-              <Button variant="plain" onClick={()=>{setModalOpen(!modalOpen)}}>
+              <Button
+                variant="plain"
+                onClick={() => {
+                  setModalOpen(!modalOpen);
+                }}
+              >
                 <AddOutlinedIcon className="text-sm text-blue-500" />
               </Button>
             </p>
@@ -315,15 +321,17 @@ export default function MakeInvoice() {
               placeholder="Địa chỉ"
               options={adrNameList}
               className="w-full h-[50px]"
-              onInputChange={(e, nValue)=>{
-                const adrId = parseInt(nValue.split(":")[1])
-                const dist = parseInt(nValue.split(":")[2])
-                setAddress(adrId)
-                setDistance(dist)
+              onInputChange={(e, nValue) => {
+                const adrId = parseInt(nValue.split(":")[1]);
+                const dist = parseInt(nValue.split(":")[2]);
+                setAddress(adrId);
+                setDistance(dist);
               }}
             />
 
-            <p className="text-md mt-2">Phí vận chuyển: {formatMoney(shipPrice)}</p>
+            <p className="text-md mt-2">
+              Phí vận chuyển: {formatMoney(shipPrice)}
+            </p>
           </div>
         )}
 
@@ -360,7 +368,9 @@ export default function MakeInvoice() {
           }}
         >
           <ModalClose variant="plain" sx={{ m: 1 }} />
-          <AddAddress />
+          <AddAddress
+            cusId={cusName ? parseInt(cusName.split(":")[1]) : null}
+          />
         </Sheet>
       </Modal>
     </>
