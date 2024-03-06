@@ -1,1 +1,1 @@
-export const MAP_API_KEY: string = "AIzaSyAHTBwIMgyOOc8iHf53X4dsKMlC5O532y0"
+export const RAPID_API_KEY: string = "01ea8dbf4emsh88d702ce239956ap1f9cd9jsn6ce2c628f36f"

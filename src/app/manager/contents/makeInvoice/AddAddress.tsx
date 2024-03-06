@@ -7,6 +7,8 @@ import { Popup } from "react-leaflet/Popup";
 import { TileLayer } from "react-leaflet/TileLayer";
 import { useMap, useMapEvent, useMapEvents } from "react-leaflet/hooks";
 
+import { RAPID_API_KEY } from "@/app/utils/mapKey";
+
 import "../../../../../public/leaflet/leaflet.css";
 import {
   LatLng,
@@ -44,7 +46,7 @@ export default function AddAddress(props: any) {
       destinations: position[0].toString() + ", " + position[1].toString(),
     },
     headers: {
-      "X-RapidAPI-Key": "01ea8dbf4emsh88d702ce239956ap1f9cd9jsn6ce2c628f36f",
+      "X-RapidAPI-Key": RAPID_API_KEY,
       "X-RapidAPI-Host": "trueway-matrix.p.rapidapi.com",
     },
   };
@@ -69,7 +71,7 @@ export default function AddAddress(props: any) {
       lang: "en",
     },
     headers: {
-      "X-RapidAPI-Key": "01ea8dbf4emsh88d702ce239956ap1f9cd9jsn6ce2c628f36f",
+      "X-RapidAPI-Key": RAPID_API_KEY,
       "X-RapidAPI-Host": "location-to-address.p.rapidapi.com",
     },
   };
