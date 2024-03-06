@@ -50,8 +50,10 @@ export default function MakeInvoice() {
   const [shipPet, setShipPet] = useState(false);
   const [address, setAddress] = useState<Number | null>(null);
   const [distance, setDistance] = useState(0);
+  const [shipId, setShipId] = useState(1);
   const [shipPrice, setShipPrice] = useState(0);
   const [price, setPrice] = useState(0);
+  const [voucher, setVoucher] = useState<String | null>(null);
   const [total, setTotal] = useState(0);
   const [btnDisabled, setBtnDisabled] = useState(true);
 
@@ -111,6 +113,7 @@ export default function MakeInvoice() {
         "http://localhost:3100/api/v1/invoices/shipfee/" + dist
       );
       const data: any = await response.data.data;
+      setShipId(data[0].SF_ID)
       setShipPrice(data[0].SF_FEE);
     } catch (error) {}
   };
@@ -160,7 +163,6 @@ export default function MakeInvoice() {
   useEffect(() => {
     if (address) {
       fetchShippingFee(distance);
-      console.log(distance, address);
     }
   }, [address]);
 
@@ -203,7 +205,7 @@ export default function MakeInvoice() {
     );
   });
 
-  function handleMakeInvoice() {
+  async function handleMakeInvoice() {
     if (session && cusName && pet && phone && service) {
       const today = new Date();
       const time =
@@ -219,17 +221,34 @@ export default function MakeInvoice() {
         "/" +
         today.getFullYear();
       const stfId = session[0]!.STF_ID;
-      const cusId = cusName?.split(":")[1];
+      const cusId = parseInt(cusName?.split(":")[1]);
       const petId = pet.split(":")[1];
       const srvId: Array<string> = [];
       service.forEach((srv: string) => {
         const id = srv.split(":")[1].toString();
         srvId.push(id);
       });
-      const tt = total;
-      console.log(time, stfId, cusId, petId, srvId, tt);
+      console.log(voucher, cusId, shipId, stfId, address, total, time, srvId);
+      try {
+        const response = await axios.post(
+          "http://localhost:3100/api/v1/invoices/",
+          {
+            vou: voucher,
+            cusId: cusId,
+            sfId: shipId,
+            stfId: stfId,
+            adrId: address,
+            total: total,
+            time: time,
+            services: srvId,
+          }
+        );
+        alert("Thêm hoá đơn thành công!")
+      } catch (error) {
+        console.log(error)
+      }
       resetAll();
-    } else console.log("Chua du thong tin");
+    } else alert("Chưa đủ thông tin!");
   }
 
   return (
