@@ -9,11 +9,12 @@ var date_format = require("date-format");
 
 export default function CustomerDetail(props: any) {
   const [petsList, setPetsList] = useState<Array<any>>();
+  const [invsList, setInvsList] = useState<Array<any>>();
   const [error, setError] = useState<string | null>();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [petIdModal, setPetIdModal] = useState(0);
-  const [mainImg, setMainImg] = useState()
+  const [mainImg, setMainImg] = useState();
 
   const fetchPetsList = async () => {
     try {
@@ -28,22 +29,37 @@ export default function CustomerDetail(props: any) {
     }
   };
 
-  async function fetchPetsMainImg(id: number){
+  async function fetchPetsMainImg(id: number) {
     try {
       const response = await axios.get(
         `http://localhost:3100/api/v1/pets/${id}/mainImg`
       );
       const linkImg: any = await response.data.data[0].PIMG_LINK;
-      const srcImg: any = await require(`../pets/pet-images/${linkImg}`)
+      const srcImg: any = await require(`../pets/pet-images/${linkImg}`);
       setMainImg(srcImg);
     } catch (err: any) {
       setError(err.message);
       console.error("Error fetching customers:", err);
     }
+  }
+
+  const fetchInvoices = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3100/api/v1/customers/" +
+          props.info.CTM_ID +
+          "/invoices"
+      );
+      const data: any = await response.data.data;
+      setInvsList(data);
+    } catch (error: any) {
+      setError(error.message);
+    }
   };
 
   useEffect(() => {
     fetchPetsList();
+    fetchInvoices();
   }, []);
 
   return (
@@ -65,7 +81,7 @@ export default function CustomerDetail(props: any) {
           }}
         >
           <ModalClose variant="plain" sx={{ m: 1 }} />
-          <PetDetail id={petIdModal} mainImg={mainImg}/>
+          <PetDetail id={petIdModal} mainImg={mainImg} />
         </Sheet>
       </Modal>
       <div className=" p-5 flex flex-col justify-center items-center">
@@ -106,8 +122,8 @@ export default function CustomerDetail(props: any) {
                   <div
                     className="text-lg text-black hover:text-blue-500 hover:scale-110 cursor-pointer"
                     onClick={() => {
-                      setPetIdModal(p.P_ID)
-                      fetchPetsMainImg(p.P_ID)
+                      setPetIdModal(p.P_ID);
+                      fetchPetsMainImg(p.P_ID);
                       setModalOpen(!modalOpen);
                     }}
                   >
@@ -131,7 +147,19 @@ export default function CustomerDetail(props: any) {
           })()}
         </div>
         <p className="text-blue-700 font-bold text-xl my-4">Lịch sử hoá đơn</p>
-        <p className="text-slate-500 italic text-lg">Có vẻ khách hàng này chưa có hoá đơn nào</p>
+        <p className="text-slate-500 italic text-lg">
+          {(()=>{
+            const invs: any = []
+            invsList?.forEach((i, idx)=>{
+              invs.push(
+                <p className="text-black text-lg">
+                  {(idx+1)+" - Mã hoá đơn:"+i.INV_ID+": - "+i.INV_CREATEDAT+" - Tổng tiền:"+i.INV_TOTAL}
+                </p>
+              )
+            })
+            return invs
+          })()}
+        </p>
       </div>
     </>
   );
