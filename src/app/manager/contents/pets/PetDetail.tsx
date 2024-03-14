@@ -57,7 +57,7 @@ export default function PetDetail(props: any) {
       setShowingIndex(showingIndex+1)
     }
     console.log(showingIndex, petImgs[showingIndex])
-    const img = require(`./pet-images/${petImgs[showingIndex].PIMG_LINK}`)
+    const img = "https://firebasestorage.googleapis.com/v0/b/zpet-images.appspot.com/o/pets%2F"+petImgs[showingIndex].PIMG_LINK+"?alt=media&token=2afc2738-92ce-4468-8279-3d3796121b95"
     setShowingImg(img)
   }
 
@@ -67,7 +67,7 @@ export default function PetDetail(props: any) {
     } else {
       setShowingIndex(showingIndex-1)
     }
-    const img = require(`./pet-images/${petImgs[showingIndex].PIMG_LINK}`)
+    const img = "https://firebasestorage.googleapis.com/v0/b/zpet-images.appspot.com/o/pets%2F"+petImgs[showingIndex].PIMG_LINK+"?alt=media&token=2afc2738-92ce-4468-8279-3d3796121b95"
     setShowingImg(img)
   }
 
@@ -77,22 +77,17 @@ export default function PetDetail(props: any) {
         <p className="text-xl font-bold mt-1 self-center">Chi tiết thú cưng</p>
         <div className="flex flex-row mt-5 items-center justify-center">
           <div className="flex flex-row m-5">
-            {/* <Image
-              className=" object-cover h-[150px] w-[150px] lg:h-[300px] lg:w-[300px] rounded-xl shadow-lg"
-              alt="petimg"
-              fill={false}
-              src={props.mainImg}
-            /> */}
             <div className="text-blue-400 mx-2 p-1 hover:text-blue-700 hover:scale-125 hover:bg-blue-100 rounded-full self-center"
               onClick={()=>{
-                getNextImg(showingIndex)
+                getPreImg(showingIndex)
               }}>
               <NavigateBeforeIcon  />
             </div>
             <Image
               className=" flex-1 object-cover h-[150px] w-[150px] lg:h-[300px] lg:w-[300px] rounded-xl shadow-lg"
               alt="petimg"
-              fill={false}
+              width={100}
+              height={100}
               src={showingImg}
             />
             <div className="text-blue-400 mx-2 p-1 hover:text-blue-700 hover:scale-125 hover:bg-blue-100 rounded-full self-center"

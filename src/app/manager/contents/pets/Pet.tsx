@@ -9,8 +9,8 @@ import PetDetail from "./PetDetail";
 export default function Pet(props:any) {
   const [modalOpen, setModalOpen] = useState(false);
 
-  const mainImg = require('./pet-images/'+props.info.PIMG_LINK)
-
+  const mainImg = "https://firebasestorage.googleapis.com/v0/b/zpet-images.appspot.com/o/pets%2F"+props.info.PIMG_LINK+"?alt=media&token=2afc2738-92ce-4468-8279-3d3796121b95"
+  
   return (
     <>
       <Modal
