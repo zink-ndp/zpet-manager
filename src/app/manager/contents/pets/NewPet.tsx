@@ -2,6 +2,8 @@ import { Autocomplete, Button, Modal, ModalClose, Sheet } from "@mui/joy";
 import axios from "axios";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import { storage } from "../../../../../public/firebase/db";
+import { ref, uploadBytes } from "firebase/storage";
 
 export default function NewPet() {
   const [cusId, setCusId] = useState<number | null>(null);
@@ -33,8 +35,25 @@ export default function NewPet() {
     imgNameList
   })
 
+  function generateRandomString(length: number) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
   async function handleAddPet() {
     console.log(cusId, ptId, name, specie, gender, birthday, images);
+    let imgRef: any
+    images.forEach((img)=>{
+      imgRef = ref(storage,'pets/'+img.name+'.jpg')
+      uploadBytes(imgRef, img).then((snapshot) => {
+        console.log('Uploaded a blob or file!');
+      });
+    })
     // try {
     //   const response = await axios.post("http://localhost:3100/api/v1/pets", {
     //     cusId: cusId,
@@ -144,7 +163,8 @@ export default function NewPet() {
           />
         </div>
         <div className="flex flex-col">
-          <p className="text-blue-500 font-semibold">Hình ảnh:</p>
+          <p className="text-blue-500 font-semibold">Hình ảnh:
+          <span className="italic text-base text-neutral-500"> (Ảnh đầu tiên là ảnh chính)</span></p>
           <input
             type="file"
             name="img"
@@ -152,7 +172,12 @@ export default function NewPet() {
             onChange={(e) => {
               if (e.target.files) {
                 const file = e.target.files[0];
-                setImages((images) => [...images, file]);
+                let randomName = generateRandomString(10)
+                const renamedFile = new File([file], randomName, {
+                  type: file.type,
+                  lastModified: file.lastModified,
+                });
+                setImages((images) => [...images, renamedFile]);
               }
             }}
           />
