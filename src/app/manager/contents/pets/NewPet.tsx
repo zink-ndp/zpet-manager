@@ -30,14 +30,10 @@ export default function NewPet() {
     cusNameList.push(cus.CTM_NAME + " - Mã:" + cus.CTM_ID);
   });
 
-  const imgNameList: any = []
-  images.forEach((img)=>{
-    imgNameList
-  })
-
   function generateRandomString(length: number) {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
     const charactersLength = characters.length;
     for (let i = 0; i < length; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -45,27 +41,34 @@ export default function NewPet() {
     return result;
   }
 
+  const imgNameList: any = [];
   async function handleAddPet() {
-    console.log(cusId, ptId, name, specie, gender, birthday, images);
-    let imgRef: any
-    images.forEach((img)=>{
-      imgRef = ref(storage,'pets/'+img.name+'.jpg')
+    let imgRef: any;
+    images.forEach((img) => {
+      imgRef = ref(storage, "pets/" + img.name + ".jpg");
+      imgNameList.push(img.name+'.jpg')
       uploadBytes(imgRef, img).then((snapshot) => {
-        console.log('Uploaded a blob or file!');
+          console.log('Uploaded:' + 'pets/'+img.name+'.jpg');
+        });
+    });
+    try {
+      const response = await axios.post("http://localhost:3100/api/v1/pets", {
+        cusId: cusId,
+        petType: ptId,
+        name: name,
+        specie: specie,
+        gender: gender,
+        birthday: birthday,
+        img: imgNameList,
       });
-    })
-    // try {
-    //   const response = await axios.post("http://localhost:3100/api/v1/pets", {
-    //     cusId: cusId,
-    //     petType: ptId,
-    //     name: name,
-    //     specie: specie,
-    //     gender: gender,
-    //     birthday: birthday,
-    //   });
-    // } catch (error) {
-    //   console.log(error);
-    // }
+      if (response.data.message == "OK") {
+        alert("Thêm thú cưng thành công!");
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   useEffect(() => {
@@ -102,8 +105,8 @@ export default function NewPet() {
             <option value="" selected>
               - Chọn loài -
             </option>
-            <option value="0">Mèo</option>
             <option value="1">Chó</option>
+            <option value="2">Mèo</option>
           </select>
         </div>
         <div className="flex flex-col">
@@ -163,8 +166,13 @@ export default function NewPet() {
           />
         </div>
         <div className="flex flex-col">
-          <p className="text-blue-500 font-semibold">Hình ảnh:
-          <span className="italic text-base text-neutral-500"> (Ảnh đầu tiên là ảnh chính)</span></p>
+          <p className="text-blue-500 font-semibold">
+            Hình ảnh:
+            <span className="italic text-base text-neutral-500">
+              {" "}
+              (Ảnh đầu tiên là ảnh chính)
+            </span>
+          </p>
           <input
             type="file"
             name="img"
@@ -172,7 +180,7 @@ export default function NewPet() {
             onChange={(e) => {
               if (e.target.files) {
                 const file = e.target.files[0];
-                let randomName = generateRandomString(10)
+                let randomName = generateRandomString(15);
                 const renamedFile = new File([file], randomName, {
                   type: file.type,
                   lastModified: file.lastModified,
@@ -183,15 +191,20 @@ export default function NewPet() {
           />
         </div>
         <div className="flex flex-row space-y-2">
-            {(()=>{
-                const imgs: any = []
-                images.forEach((img)=>{
-                    imgs.push(
-                        <Image alt="img" height={100} width={100} src={URL.createObjectURL(img)} />
-                    )
-                })
-                return imgs
-            })()}
+          {(() => {
+            const imgs: any = [];
+            images.forEach((img) => {
+              imgs.push(
+                <Image
+                  alt="img"
+                  height={100}
+                  width={100}
+                  src={URL.createObjectURL(img)}
+                />
+              );
+            });
+            return imgs;
+          })()}
         </div>
         <button
           onClick={() => {
