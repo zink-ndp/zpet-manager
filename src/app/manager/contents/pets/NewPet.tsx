@@ -7,6 +7,7 @@ import { storage } from "../../../../../public/firebase/db";
 import { ref, uploadBytes } from "firebase/storage";
 
 export default function NewPet(props: any) {
+  
   const [cusId, setCusId] = useState<number | null>(props.cusId);
   const [ptId, setPtId] = useState<number | null>(null);
   const [name, setName] = useState("");
@@ -27,10 +28,6 @@ export default function NewPet(props: any) {
       setCusName(data.CTM_NAME + " - Mã:" + data.CTM_ID);
     } catch (error) {}
   };
-
-  if (props.cusId!=null){
-    fetchCustomerById(props.cusId)
-  }
 
   const fetchCustomer = async () => {
     try {

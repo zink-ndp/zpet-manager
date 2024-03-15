@@ -6,6 +6,7 @@ import Sheet from "@mui/joy/Sheet";
 import PetDetail from "../pets/PetDetail";
 import { apiUrl } from "@/app/utils/apiUrl";
 import { formatMoney } from "@/app/functions";
+import NewPet from "../pets/NewPet";
 
 var date_format = require("date-format");
 
@@ -15,6 +16,7 @@ export default function CustomerDetail(props: any) {
   const [error, setError] = useState<string | null>();
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpenNew, setModalOpenNew] = useState(false);
   const [petIdModal, setPetIdModal] = useState(0);
   const [mainImg, setMainImg] = useState();
 
@@ -107,7 +109,7 @@ export default function CustomerDetail(props: any) {
             {props.info.CTM_ISACTIVE ? "Hoạt động" : "Chưa có tài khoản"}
           </p>
         </div>
-        <p className="text-blue-700 font-bold text-xl my-4">Chủ của thú cưng</p>
+        <p className="text-blue-700 font-bold text-xl my-4">Chủ của thú cưng <span onClick={()=>{setModalOpenNew(!modalOpenNew)}} className="text-sm text-blue-700 cursor-pointer hover:scale-105">[Thêm]</span></p>
         <div className="flex flex-col">
           {(() => {
             if (error) {
@@ -163,6 +165,26 @@ export default function CustomerDetail(props: any) {
           })()}
         </p>
       </div>
+      <Modal
+        aria-labelledby="modal-title"
+        aria-describedby="modal-desc"
+        open={modalOpenNew}
+        onClose={() => setModalOpenNew(false)}
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      >
+        <Sheet
+          variant="outlined"
+          sx={{
+            minWidth: { sm: 0.8, lg: 0.5 },
+            borderRadius: "md",
+            p: 3,
+            boxShadow: "lg",
+          }}
+        >
+          <ModalClose variant="plain" sx={{ m: 1 }} />
+          <NewPet/>
+        </Sheet>
+      </Modal>
     </>
   );
 }
