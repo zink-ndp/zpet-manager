@@ -3,6 +3,8 @@ import axios from "axios";
 import { Button, Input } from "@mui/joy";
 import ReplayIcon from "@mui/icons-material/Replay";
 import Staff from "./Staff";
+import { apiUrl } from "@/app/utils/apiUrl";
+
 
 export default function StaffList() {
   const [staffList, setStaffList] = useState<Array<any>>();
@@ -14,7 +16,7 @@ export default function StaffList() {
   const fetchCustomers = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3100/api/v1/staffs"
+        apiUrl+"/api/v1/staffs"
       );
       const data: any = await response.data.data;
       setStaffList(data);
@@ -28,7 +30,7 @@ export default function StaffList() {
   const searchApi = async (s: string) => {
     try {
       const response = await axios.get(
-        `http://localhost:3100/api/v1/staffs/search/${s}`
+        `${apiUrl}/api/v1/staffs/search/${s}`
       );
       const data: any = await response.data.data;
       setStaffList(data);

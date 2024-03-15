@@ -3,6 +3,7 @@ import axios from "axios";
 import Customer from "./Customer";
 import { Button, Input } from "@mui/joy";
 import ReplayIcon from "@mui/icons-material/Replay";
+import { apiUrl } from "@/app/utils/apiUrl";
 
 export default function CustommerList() {
   const [cusList, setCusList] = useState<Array<any>>();
@@ -14,7 +15,7 @@ export default function CustommerList() {
   const fetchCustomers = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3100/api/v1/customers"
+        apiUrl+"/api/v1/customers"
       );
       const data: any = await response.data.data;
       setCusList(data);
@@ -28,7 +29,7 @@ export default function CustommerList() {
   const searchApi = async (s: string) => {
     try {
       const response = await axios.get(
-        `http://localhost:3100/api/v1/customers/search/${s}`
+        `${apiUrl}/api/v1/customers/search/${s}`
       );
       const data: any = await response.data.data;
       setCusList(data);

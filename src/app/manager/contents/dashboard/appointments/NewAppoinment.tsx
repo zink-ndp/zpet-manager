@@ -7,6 +7,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import axios from "axios";
+import { apiUrl } from "@/app/utils/apiUrl";
+
 
 export default function NewAppoinment() {
   const testOption = ["opt1", "opt2", "opt3"];
@@ -26,7 +28,7 @@ export default function NewAppoinment() {
   const fetchCustomer = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3100/api/v1/customers"
+        apiUrl+"/api/v1/customers"
       );
       const data = await response.data.data;
       setCusList(data);
@@ -36,7 +38,7 @@ export default function NewAppoinment() {
   const fetchCustomerByPhone = async (p: String) => {
     try {
       const response = await axios.get(
-        `http://localhost:3100/api/v1/customers/info/${p}`
+        `${apiUrl}/api/v1/customers/info/${p}`
       );
       const data = await response.data.data;
       setCusName(data[0].CTM_NAME + " - Mã:" + data[0].CTM_ID);
@@ -46,7 +48,7 @@ export default function NewAppoinment() {
   const fetchServices = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3100/api/v1/services/"
+        apiUrl+"/api/v1/services/"
       );
       const data: any = await response.data.data;
       setSrvList(data);
@@ -89,7 +91,7 @@ export default function NewAppoinment() {
     const postNewAppointment = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:3100/api/v1/appointments/",
+          apiUrl+"/api/v1/appointments/",
           {
             cusId: cusId,
             date: date,

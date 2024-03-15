@@ -3,6 +3,8 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import ReplayIcon from "@mui/icons-material/Replay";
 import Service from './Service';
+import { apiUrl } from "@/app/utils/apiUrl";
+
 
 
 export default function ServicesList() {
@@ -15,7 +17,7 @@ export default function ServicesList() {
     const fetServices = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3100/api/v1/services"
+          apiUrl+"/api/v1/services"
         );
         const data: any = await response.data.data;
         setSrvList(data);
@@ -29,7 +31,7 @@ export default function ServicesList() {
     const searchApi = async (s: string) => {
       try {
         const response = await axios.get(
-          `http://localhost:3100/api/v1/services/search/${s}`
+          `${apiUrl}/api/v1/services/search/${s}`
         );
         const data: any = await response.data.data;
         setSrvList(data);

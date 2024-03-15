@@ -7,6 +7,8 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel } from "react-responsive-carousel";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import { apiUrl } from "@/app/utils/apiUrl";
+
 
 var date_format = require("date-format");
 
@@ -21,7 +23,7 @@ export default function PetDetail(props: any) {
   const fetchPetInfo = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3100/api/v1/pets/" + props.id
+        apiUrl+"/api/v1/pets/" + props.id
       );
       const data: any = await response.data.data;
       setPetInfo(data);
@@ -33,7 +35,7 @@ export default function PetDetail(props: any) {
   const fetchPetImgs = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3100/api/v1/pets/" + props.id + "/imgs"
+        apiUrl+"/api/v1/pets/" + props.id + "/imgs"
       );
       const data: any = await response.data.data;
       setPetImgs(data);

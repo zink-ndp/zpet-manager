@@ -2,11 +2,12 @@ import { Autocomplete, Button, Modal, ModalClose, Sheet } from "@mui/joy";
 import axios from "axios";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import { apiUrl } from "@/app/utils/apiUrl";
 import { storage } from "../../../../../public/firebase/db";
 import { ref, uploadBytes } from "firebase/storage";
 
-export default function NewPet() {
-  const [cusId, setCusId] = useState<number | null>(null);
+export default function NewPet(props: any) {
+  const [cusId, setCusId] = useState<number | null>(props.cusId);
   const [ptId, setPtId] = useState<number | null>(null);
   const [name, setName] = useState("");
   const [specie, setSpecie] = useState("");
@@ -16,10 +17,25 @@ export default function NewPet() {
 
   const [cusName, setCusName] = useState<string | null>("");
   const [cusList, setCusList] = useState<Array<any>>();
+
+  const fetchCustomerById = async (id: number) => {
+    try {
+      const response = await axios.get(
+        apiUrl+"/api/v1/customers/"+id
+      );
+      const data = await response.data.data;
+      setCusName(data.CTM_NAME + " - Mã:" + data.CTM_ID);
+    } catch (error) {}
+  };
+
+  if (props.cusId!=null){
+    fetchCustomerById(props.cusId)
+  }
+
   const fetchCustomer = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3100/api/v1/customers"
+        apiUrl+"/api/v1/customers"
       );
       const data = await response.data.data;
       setCusList(data);
@@ -52,7 +68,7 @@ export default function NewPet() {
         });
     });
     try {
-      const response = await axios.post("http://localhost:3100/api/v1/pets", {
+      const response = await axios.post(apiUrl+"/api/v1/pets", {
         cusId: cusId,
         petType: ptId,
         name: name,

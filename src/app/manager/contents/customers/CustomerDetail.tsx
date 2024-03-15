@@ -4,6 +4,7 @@ import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
 import Sheet from "@mui/joy/Sheet";
 import PetDetail from "../pets/PetDetail";
+import { apiUrl } from "@/app/utils/apiUrl";
 import { formatMoney } from "@/app/functions";
 
 var date_format = require("date-format");
@@ -20,7 +21,7 @@ export default function CustomerDetail(props: any) {
   const fetchPetsList = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3100/api/v1/customers/" + props.info.CTM_ID + "/pets"
+        apiUrl+"/api/v1/customers/" + props.info.CTM_ID + "/pets"
       );
       const data: any = await response.data.data;
       setPetsList(data);
@@ -47,7 +48,7 @@ export default function CustomerDetail(props: any) {
   const fetchInvoices = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3100/api/v1/customers/" +
+        apiUrl+"/api/v1/customers/" +
           props.info.CTM_ID +
           "/invoices"
       );

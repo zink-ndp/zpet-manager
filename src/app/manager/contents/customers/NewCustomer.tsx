@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { apiUrl } from "@/app/utils/apiUrl";
 
 export default function NewCustomer() {
   const [phone, setPhone] = useState("");
@@ -8,7 +9,7 @@ export default function NewCustomer() {
   async function handleNewCus() {
     try {
       const response = await axios.post(
-        "http://localhost:3100/api/v1/customers",
+        apiUrl+"/api/v1/customers",
         {
             phone: phone,
             name: name,
