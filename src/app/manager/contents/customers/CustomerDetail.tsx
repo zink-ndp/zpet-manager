@@ -7,6 +7,7 @@ import PetDetail from "../pets/PetDetail";
 import { apiUrl } from "@/app/utils/apiUrl";
 import { formatMoney } from "@/app/functions";
 import NewPet from "../pets/NewPet";
+import InvoiceDetail from "../invoices/InvoiceDetail";
 
 var date_format = require("date-format");
 
@@ -16,14 +17,17 @@ export default function CustomerDetail(props: any) {
   const [error, setError] = useState<string | null>();
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpenInv, setModalOpenInv] = useState(false);
   const [modalOpenNew, setModalOpenNew] = useState(false);
   const [petIdModal, setPetIdModal] = useState(0);
   const [mainImg, setMainImg] = useState();
 
+  const [invToModal, setInvToModal] = useState()
+
   const fetchPetsList = async () => {
     try {
       const response = await axios.get(
-        apiUrl+"/api/v1/customers/" + props.info.CTM_ID + "/pets"
+        apiUrl + "/api/v1/customers/" + props.info.CTM_ID + "/pets"
       );
       const data: any = await response.data.data;
       setPetsList(data);
@@ -50,9 +54,7 @@ export default function CustomerDetail(props: any) {
   const fetchInvoices = async () => {
     try {
       const response = await axios.get(
-        apiUrl+"/api/v1/customers/" +
-          props.info.CTM_ID +
-          "/invoices"
+        apiUrl + "/api/v1/customers/" + props.info.CTM_ID + "/invoices"
       );
       const data: any = await response.data.data;
       setInvsList(data);
@@ -109,7 +111,17 @@ export default function CustomerDetail(props: any) {
             {props.info.CTM_ISACTIVE ? "Hoạt động" : "Chưa có tài khoản"}
           </p>
         </div>
-        <p className="text-blue-700 font-bold text-xl my-4">Chủ của thú cưng <span onClick={()=>{setModalOpenNew(!modalOpenNew)}} className="text-sm text-blue-700 cursor-pointer hover:scale-105">[Thêm]</span></p>
+        <p className="text-blue-700 font-bold text-xl my-4">
+          Chủ của thú cưng{" "}
+          <span
+            onClick={() => {
+              setModalOpenNew(!modalOpenNew);
+            }}
+            className="text-sm text-blue-700 cursor-pointer hover:scale-105"
+          >
+            [Thêm]
+          </span>
+        </p>
         <div className="flex flex-col">
           {(() => {
             if (error) {
@@ -124,7 +136,7 @@ export default function CustomerDetail(props: any) {
               petsList.forEach((p, i) => {
                 pet.push(
                   <div
-                    className="text-lg text-black hover:text-blue-500 hover:scale-110 cursor-pointer"
+                    className=" italic text-lg text-black hover:text-blue-500 hover:scale-110 cursor-pointer"
                     onClick={() => {
                       setPetIdModal(p.P_ID);
                       fetchPetsMainImg(p.P_ID);
@@ -152,16 +164,29 @@ export default function CustomerDetail(props: any) {
         </div>
         <p className="text-blue-700 font-bold text-xl my-4">Lịch sử hoá đơn</p>
         <p className="text-slate-500 italic text-lg">
-          {(()=>{
-            const invs: any = []
-            invsList?.forEach((i, idx)=>{
+          {(() => {
+            const invs: any = [];
+            invsList?.forEach((i, idx) => {
               invs.push(
-                <p className="text-black text-lg">
-                  {(idx+1)+" - Mã hoá đơn:"+i.INV_ID+": - "+i.INV_CREATEDAT+" - Tổng tiền:"+formatMoney(i.INV_TOTAL)}
+                <p
+                  onClick={() => {
+                    setInvToModal(i)
+                    setModalOpenInv(!modalOpenInv);
+                  }}
+                  className="text-black text-lg cursor-pointer hover:scale-105 hover:text-blue-500"
+                >
+                  {idx +
+                    1 +
+                    " - Mã hoá đơn:" +
+                    i.INV_ID +
+                    ": - " +
+                    i.INV_CREATEDAT +
+                    " - Tổng tiền:" +
+                    formatMoney(i.INV_TOTAL)}
                 </p>
-              )
-            })
-            return invs
+              );
+            });
+            return invs;
           })()}
         </p>
       </div>
@@ -182,8 +207,17 @@ export default function CustomerDetail(props: any) {
           }}
         >
           <ModalClose variant="plain" sx={{ m: 1 }} />
-          <NewPet/>
+          <NewPet />
         </Sheet>
+      </Modal>
+      <Modal
+        aria-labelledby="modal-title"
+        aria-describedby="modal-desc"
+        open={modalOpenInv}
+        onClose={() => setModalOpenInv(false)}
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      >
+        <InvoiceDetail info={invToModal} />
       </Modal>
     </>
   );
