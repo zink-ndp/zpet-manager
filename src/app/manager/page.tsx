@@ -1,8 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import { sidebarItemsManager, sidebarItemsStaff } from "../utils/sidebarItem";
+import Loading from "../component/Loading";
 import BackgroundMain from "../component/ui/BackgroundMain";
 import Content from "../manager/Content";
+import NotLogged from "./NotLogged";
 import { useRouter } from "next/navigation";
 import { getSessionData } from "../session/getSession";
 import { clearSession } from "../session/clearSession";
@@ -10,17 +12,18 @@ import { clearSession } from "../session/clearSession";
 //icon
 import ListIcon from '@mui/icons-material/List';
 import LogoutIcon from '@mui/icons-material/Logout';
-import NotLogged from "./NotLogged";
 
 export default function Page() {
 
   const [activedTab, setActivedTab] = useState("dashboard");
   const [expand, setExpand] = useState(false);
   const [session, setSession] = useState<Array<any>|null>(null);
+  const [showLoading, setShowLoading] = useState(false);
 
   const router = useRouter()
 
   function handleLogout(){
+    setShowLoading(true)
     clearSession("session")
     router.replace("/login")
   }
@@ -93,6 +96,10 @@ export default function Page() {
               <LogoutIcon/>
               {expand ? <p>Đăng xuất</p> : <p className="hidden lg:block">Đăng xuất</p>}
             </button>
+            <div className={` ${showLoading ? "flex" : "hidden"} flex-col items-center justify-center`}>
+              <Loading />
+              <p className="text-blue-500">Đang đăng xuất</p>
+            </div>
           </div>
           <div className="flex flex-col w-full">
             <Content actived={activedTab} session={session} />

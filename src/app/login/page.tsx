@@ -6,8 +6,9 @@ import { FormLabel, Radio, RadioGroup, Sheet, styled } from "@mui/joy";
 import React from "react";
 import { People, Person } from "@mui/icons-material";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
-import { cookies } from 'next/headers'
+import { cookies } from "next/headers";
 import axios from "axios";
+import Loading from "../component/Loading";
 
 import { login } from "../session/login";
 
@@ -18,18 +19,24 @@ export default function Page() {
   const [pass, setPass] = useState("");
   const [roleName, setRoleName] = useState("");
   const [role, setRole] = useState<number>(0);
+  const [showLoading, setShowLoading] = useState(false);
 
   const handleLogin = async (email: string, pw: string, role: number) => {
+    setShowLoading(!showLoading);
     try {
       const response = await axios.get(
         `http://localhost:3100/api/v1/staffs/login/${email}&${pw}&${role}`
       );
       const data: any = await response.data.data;
       const message: string = await response.data.message;
-      if (data.length == 0 ) {
+      if (data.length == 0) {
         alert(message);
+        setShowLoading(false);
       } else {
-        login(data)
+        setTimeout(() => {
+          setShowLoading(false);
+        }, 1500);
+        login(data);
       }
     } catch (err: any) {
       console.error("Error fetching info:", err);
@@ -104,7 +111,7 @@ export default function Page() {
                     checkedIcon={<CheckCircleRoundedIcon />}
                     onChange={() => {
                       setRoleName(value);
-                      setRole(index)
+                      setRole(index);
                     }}
                     className="ml-5"
                   />
@@ -116,10 +123,14 @@ export default function Page() {
             <button
               className=" w-full bg-blue-500 hover:bg-blue-300 bold p-3 rounded-md disabled:bg-blue-100"
               disabled={!email || !pass || !roleName}
-              onClick={() => handleLogin(email, pass, role) }
+              onClick={() => handleLogin(email, pass, role)}
             >
               Đăng nhập
             </button>
+            <div className={` ${showLoading ? "flex" : "hidden"} flex-col items-center justify-center`}>
+              <Loading />
+              <p className="text-blue-500">Đang đăng nhập</p>
+            </div>
           </div>
         </div>
       </div>
