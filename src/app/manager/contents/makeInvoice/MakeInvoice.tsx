@@ -222,13 +222,13 @@ export default function MakeInvoice() {
         today.getFullYear();
       const stfId = session[0]!.STF_ID;
       const cusId = parseInt(cusName?.split(":")[1]);
-      const petId = pet.split(":")[1];
+      const petId = parseInt(pet.split(":")[1]);
       const srvId: Array<string> = [];
       service.forEach((srv: string) => {
         const id = srv.split(":")[1].toString();
         srvId.push(id);
       });
-      console.log(voucher, cusId, shipId, stfId, address, total, time, srvId);
+      console.log(voucher, cusId, shipId, stfId, address, petId, total, time, srvId);
       try {
         const response = await axios.post(
           "http://localhost:3100/api/v1/invoices/",
@@ -238,12 +238,15 @@ export default function MakeInvoice() {
             sfId: shipId,
             stfId: stfId,
             adrId: address,
-            total: price,
+            pId: petId,
+            total: total,
             time: time,
             services: srvId,
           }
         );
         alert("Thêm hoá đơn thành công!")
+        // const ms = await response.data.message
+        // console.log(ms)
       } catch (error) {
         console.log(error)
       }

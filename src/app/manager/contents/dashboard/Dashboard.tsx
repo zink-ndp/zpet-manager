@@ -43,7 +43,7 @@ export default function Dashboard() {
       <div
         className={`flex lg:flex-row flex-col-reverse w-full rounded-xl justify-center lg:space-x-5 space-y-5 `}
       >
-        <div className="flex flex-col p-8 mt-5 lg:mt-4 rounded-xl lg:w-[70%] bg-white shadow-md">
+        <div className="flex flex-col p-8 mt-5 lg:mt-4 rounded-xl lg:w-[65%] bg-white shadow-xl">
           <p className="text-black font-bold text-2xl">Thống kê</p>
           <div className="w-full flex flex-row space-x-5 mt-4 lg:mt-2 items-center justify-center">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -64,7 +64,7 @@ export default function Dashboard() {
           </div>
           <div className="flex flex-col lg:flex-row"></div>
         </div>
-        <div className="flex flex-col p-8 rounded-xl lg:w-[30%] bg-white shadow-md">
+        <div className="flex flex-col p-8 rounded-xl lg:w-[35%] bg-white shadow-xl">
           <div className="flex flex-row justify-between">
             <p className="text-black font-bold text-2xl">Lịch hẹn</p>
             <button

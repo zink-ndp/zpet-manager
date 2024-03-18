@@ -16,7 +16,7 @@ export const sidebarItemsManager = [
   { key: "pets", text: "Thú cưng", icon: <PetsIcon /> },
   { key: "custommers", text: "Khách hàng", icon: <Face3Icon /> },
   { key: "conservation", text: "Chat", icon: <QuestionAnswerIcon /> },
-  { key: "appointment", text: "Lịch hẹn", icon: <NotificationsActiveIcon /> },
+  // { key: "appointments", text: "Lịch hẹn", icon: <NotificationsActiveIcon /> },
   { key: "staffs", text: "Nhân viên", icon: <SupervisedUserCircleIcon /> },
   { key: "services", text: "Dịch vụ", icon: <MedicalInformationIcon /> },
   { key: "vouchers", text: "Khuyến mãi", icon: <PercentIcon /> },
@@ -28,6 +28,6 @@ export const sidebarItemsStaff = [
   { key: "invoices", text: "Hoá đơn", icon: <ReceiptIcon /> },
   { key: "pets", text: "Thú cưng", icon: <PetsIcon /> },
   { key: "custommers", text: "Khách hàng", icon: <Face3Icon /> },
-  { key: "appointment", text: "Lịch hẹn", icon: <QuestionAnswerIcon /> },
-  { key: "conservation", text: "conservation", icon: <NotificationsActiveIcon /> },
+  { key: "conservation", text: "conservation", icon: <QuestionAnswerIcon /> },
+  // { key: "appointments", text: "Lịch hẹn", icon: <QuestionAnswerIcon /> },
 ];

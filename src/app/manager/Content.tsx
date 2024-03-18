@@ -9,7 +9,7 @@ import Services from "./contents/services/Services";
 import Vouchers from "./contents/vouchers/Vouchers";
 
 export default function Content(props: any) {
-  const session = props.session
+  const session = props.session;
   switch (props.actived) {
     case "dashboard":
       return <Dashboard />;

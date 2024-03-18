@@ -19,6 +19,10 @@ export default function ServiceDetail(props: any) {
     setIsInfoChanged(false);
   }
 
+  function handleUpdate() {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <div className="flex flex-col">
       <p className="text-black text-lg">
@@ -94,7 +98,7 @@ export default function ServiceDetail(props: any) {
         className="primary-btn disabled:primary-disabled-btn"
         disabled={!isInfoChanged}
         onClick={() => {
-          console.log(isInfoChanged);
+          handleUpdate()
         }}
       >
         Cập nhật thông tin
