@@ -6,6 +6,7 @@ import { formatMoney } from "@/app/functions";
 export default function InvoiceDetail(props: any) {
   const [invInfo, setInvInfo] = useState<Array<any>>([]);
   const [invDetail, setInvDetail] = useState<Array<any>>([]);
+  const [shipPrice, setShipPrice] = useState(0)
 
   var total = 0;
 
@@ -21,8 +22,19 @@ export default function InvoiceDetail(props: any) {
     }
   };
 
+  const fetchShippingFee = async (dist: Number) => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3100/api/v1/invoices/shipfee/" + dist
+      );
+      const data: any = await response.data.data;
+      setShipPrice(data[0].SF_FEE);
+    } catch (error) {}
+  };
+
   useEffect(() => {
     fetchInvDetail(props.info.INV_ID);
+    props.info.ADR_DISTANCE && fetchShippingFee(props.info.ADR_DISTANCE)
   }, []);
 
   return (
@@ -60,11 +72,28 @@ export default function InvoiceDetail(props: any) {
             return srvRow;
           })()}
         </table>
+        <p className="font-bold mt-2">
+          Giao đến:{" "}
+          <span className=" text-base font-normal">
+            {props.info.ADR_RECEIVERNAME
+              ? props.info.ADR_RECEIVERNAME +
+                ", " +
+                props.info.ADR_NOTE +
+                ", " +
+                props.info.ADR_WARD +
+                ", " +
+                props.info.ADR_DISTRICT +
+                ", " +
+                props.info.ADR_PROVINCE
+              : "Không giao"}
+          </span>
+        </p>
         <div className="float-end self-end text-end">
+          <p>Phí ship: {shipPrice ? formatMoney(shipPrice) : "Không"}</p>
           <p>Voucher: Không</p>
           <p>Giá giảm: 0d</p>
+          <p>Tích luỹ {Math.floor(total * 0.001)}</p>
           <p className=" font-bold">Thành tiền {formatMoney(total)}</p>
-          <p className=" font-bold">Tích luỹ {Math.floor(total*0.001)}</p>
         </div>
       </div>
     </div>
