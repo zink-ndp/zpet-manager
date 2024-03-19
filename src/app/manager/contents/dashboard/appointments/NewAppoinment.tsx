@@ -174,7 +174,7 @@ export default function NewAppoinment() {
           handleAddAppointment();
         }}
       >
-        Lập hoá đơn
+        Thêm lịch hẹn
       </button>
     </div>
   );

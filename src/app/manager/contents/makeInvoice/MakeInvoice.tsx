@@ -8,6 +8,7 @@ import { getToday } from "@/app/functions";
 import { getSessionData } from "@/app/session/getSession";
 import {
   Button,
+  Input,
   List,
   ListDivider,
   ListItem,
@@ -53,8 +54,11 @@ export default function MakeInvoice() {
   const [shipId, setShipId] = useState(1);
   const [shipPrice, setShipPrice] = useState(0);
   const [price, setPrice] = useState(0);
+  const [isUseVoucher, setIsUseVoucher] = useState(false);
   const [voucher, setVoucher] = useState<String | null>(null);
+  const [discountPrice, setDiscountPrice] = useState(0)
   const [total, setTotal] = useState(0);
+  const [point, setPoint] = useState(0)
   const [btnDisabled, setBtnDisabled] = useState(true);
 
   const fetchCustomers = async () => {
@@ -113,7 +117,7 @@ export default function MakeInvoice() {
         "http://localhost:3100/api/v1/invoices/shipfee/" + dist
       );
       const data: any = await response.data.data;
-      setShipId(data[0].SF_ID)
+      setShipId(data[0].SF_ID);
       setShipPrice(data[0].SF_FEE);
     } catch (error) {}
   };
@@ -169,6 +173,10 @@ export default function MakeInvoice() {
   useEffect(() => {
     setTotal(price + shipPrice);
   }, [price, shipPrice]);
+
+  useEffect(()=>{
+    setPoint(Math.floor(total*0.001))
+  },[total])
 
   useEffect(() => {
     if (!cusName || !pet || !service) setBtnDisabled(true);
@@ -228,7 +236,18 @@ export default function MakeInvoice() {
         const id = srv.split(":")[1].toString();
         srvId.push(id);
       });
-      console.log(voucher, cusId, shipId, stfId, address, petId, total, time, srvId);
+      console.log(
+        voucher,
+        cusId,
+        shipId,
+        stfId,
+        address,
+        petId,
+        total,
+        time,
+        srvId,
+        point
+      );
       try {
         const response = await axios.post(
           "http://localhost:3100/api/v1/invoices/",
@@ -242,13 +261,14 @@ export default function MakeInvoice() {
             total: total,
             time: time,
             services: srvId,
+            point: point,
           }
         );
-        alert("Thêm hoá đơn thành công!")
-        // const ms = await response.data.message
-        // console.log(ms)
+        alert("Thêm hoá đơn thành công!");
+        const ms = await response.data.data
+        console.log(ms)
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
       resetAll();
     } else alert("Chưa đủ thông tin!");
@@ -357,10 +377,42 @@ export default function MakeInvoice() {
           </div>
         )}
 
+        <Checkbox
+          disabled={cusName ? false : true}
+          className="text-xl mt-4 font-semi-bold"
+          label="Áp dụng Voucher:"
+          size="lg"
+          checked={isUseVoucher}
+          onChange={(e) => {
+            setIsUseVoucher(!isUseVoucher);
+          }}
+        />
+        {isUseVoucher && (
+          <div>
+            <Input
+              size="lg"
+              value={voucher ? voucher : ""}
+              placeholder="Nhập mã khuyến mãi"
+              className="w-full h-[50px] mt-3"
+              onChange={(e: any)=>{
+                setVoucher(e.target.value)
+              }}
+            />
+            <p className="text-md mt-2">
+              Giá giảm: {formatMoney(discountPrice)}
+            </p>
+          </div>
+        )}
+
         <ListDivider sx={{ marginTop: "15px" }} />
         <p className="text-xl mt-4">
           Tổng tiền phải thanh toán:{" "}
           <p className="font-bold">{formatMoney(total)}</p>
+        </p>
+
+        <p className="text-md mt-4">
+          Điểm tích luỹ cho khách hàng:{" "}
+          <p className="font-bold">{point}</p>
         </p>
 
         <button

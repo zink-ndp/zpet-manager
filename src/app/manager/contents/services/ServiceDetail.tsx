@@ -1,5 +1,7 @@
+import { apiUrl } from "@/app/utils/apiUrl";
 import { Button } from "@mui/joy";
-import React, { useEffect, useState } from "react";
+import axios from "axios";
+import React, { ChangeEvent, useEffect, useState } from "react";
 
 export default function ServiceDetail(props: any) {
   const service = props.info;
@@ -19,8 +21,19 @@ export default function ServiceDetail(props: any) {
     setIsInfoChanged(false);
   }
 
-  function handleUpdate() {
-    throw new Error("Function not implemented.");
+  async function handleUpdate() {
+    console.log(service.SRV_ID, name, des, price, status);
+    try {
+      const response = await axios.post(apiUrl+"/api/v1/services/"+service.SRV_ID,{
+        name: name,
+        des: des,
+        price: price,
+        stt: status,
+      })
+      
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -74,7 +87,8 @@ export default function ServiceDetail(props: any) {
         name="stt"
         id=""
         className="input-form border-slate-300 text-slate-500"
-        onChange={()=>{
+        onChange={(e)=>{
+          setStatus(parseInt(e.target.value))
           setIsInfoChanged(true);
         }}
       >
@@ -98,7 +112,7 @@ export default function ServiceDetail(props: any) {
         className="primary-btn disabled:primary-disabled-btn"
         disabled={!isInfoChanged}
         onClick={() => {
-          handleUpdate()
+          handleUpdate();
         }}
       >
         Cập nhật thông tin

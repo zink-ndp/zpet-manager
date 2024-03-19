@@ -64,6 +64,7 @@ export default function InvoiceDetail(props: any) {
           <p>Voucher: Không</p>
           <p>Giá giảm: 0d</p>
           <p className=" font-bold">Thành tiền {formatMoney(total)}</p>
+          <p className=" font-bold">Tích luỹ {Math.floor(total*0.001)}</p>
         </div>
       </div>
     </div>
