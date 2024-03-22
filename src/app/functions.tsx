@@ -20,7 +20,7 @@ export function formatMoney(money: number): String {
 export function convertDateToUTC(isoDateString: string): String {
   const date = new Date(isoDateString);
   // Lấy các thành phần ngày tháng
-  const day = date.getUTCDate();
+  const day = date.getUTCDate() + 1;
   const month = date.getUTCMonth() + 1; // Tháng tính từ 0 (0 - 11)
   const year = date.getUTCFullYear();
   const hours = date.getUTCHours();
@@ -29,3 +29,16 @@ export function convertDateToUTC(isoDateString: string): String {
   const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}`;
   return formattedDate
 }
+
+
+export function convertDateToUTCymd(isoDateString: string): String {
+    const date = new Date(isoDateString);
+    // Lấy các thành phần ngày tháng
+    const day = date.getUTCDate() + 1;
+    const month = date.getUTCMonth() + 1; // Tháng tính từ 0 (0 - 11)
+    const year = date.getUTCFullYear();
+    // Kết quả
+    const formattedDate = `${year}-${month}-${day}`;
+    return formattedDate
+  }
+  

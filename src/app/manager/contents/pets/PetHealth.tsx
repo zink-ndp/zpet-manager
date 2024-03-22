@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function PetHealth() {
+export default function PetHealth(props: any) {
   return (
     <>
       <div className="flex flex-col lg:flex-row lg:space-x-48 w-full bg-blue-50 rounded-xl p-5 mt-3">

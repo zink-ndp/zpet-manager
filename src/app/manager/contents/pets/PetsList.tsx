@@ -11,22 +11,6 @@ export default function PetsList() {
   const [allPets, setAllPets] = useState<Array<any>>();
   const [error, setError] = useState<string | null>(null);
 
-  // const petImgRef = ref(storage, "pets");
-
-  // listAll(petImgRef)
-  //   .then((res) => {
-  //     res.items.forEach((itemRef) => {
-  //       console.log(
-  //         "https://firebasestorage.googleapis.com/v0/b/zpet-images.appspot.com/o/pets%2F" +
-  //           itemRef.name +
-  //           "?alt=media&token=2afc2738-92ce-4468-8279-3d3796121b95"
-  //       );
-  //     });
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //   });
-
   const fetchPets = async () => {
     try {
       const response = await axios.get("http://localhost:3100/api/v1/pets");
@@ -65,7 +49,7 @@ export default function PetsList() {
   }
 
   function reloadList(): void {
-    setPetsList(allPets);
+    fetchPets()
   }
 
   return (
