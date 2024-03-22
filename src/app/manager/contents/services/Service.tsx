@@ -17,7 +17,7 @@ export default function Service(props: any) {
     <>
       <div className=" bg-blue-100 rounded-xl shadow-md p-5 flex flex-row ">
         <div className="text-blue-700 font-semibold flex flex-row space-x-10 flex-1">
-          <Badge badgeContent={"Available"} color="success">
+          <Badge badgeContent={ service.SRV_ISAVAILABLE ? "Available" : "Unavailable"} color={ service.SRV_ISAVAILABLE ? "success" : "danger"}>
             <Image alt="srvImg" src={defaultImg} width={50} height={50} />
           </Badge>
           <div className="flex flex-col lg:flex-row lg:space-x-2">

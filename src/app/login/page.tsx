@@ -11,6 +11,7 @@ import axios from "axios";
 import Loading from "../component/Loading";
 
 import { login } from "../session/login";
+import { apiUrl } from "../utils/apiUrl";
 
 export default function Page() {
   const iconDecoration = [<Person key={0} />, <People key={1} />];
@@ -24,12 +25,18 @@ export default function Page() {
   const handleLogin = async (email: string, pw: string, role: number) => {
     setShowLoading(!showLoading);
     try {
-      const response = await axios.get(
-        `http://localhost:3100/api/v1/staffs/login/${email}&${pw}&${role}`
+      const response = await axios.post(
+        `${apiUrl}/api/v1/staffs/login/`,
+        {
+          email: email,
+          pw: pw,
+          role: role,
+        }
       );
-      const data: any = await response.data.data;
+      const auth: boolean = await response.data.auth
+      const data: string = await response.data.data;
       const message: string = await response.data.message;
-      if (data.length == 0) {
+      if (!auth) {
         alert(message);
         setShowLoading(false);
       } else {
@@ -127,7 +134,11 @@ export default function Page() {
             >
               Đăng nhập
             </button>
-            <div className={` ${showLoading ? "flex" : "hidden"} flex-col items-center justify-center`}>
+            <div
+              className={` ${
+                showLoading ? "flex" : "hidden"
+              } flex-col items-center justify-center`}
+            >
               <Loading />
               <p className="text-blue-500">Đang đăng nhập</p>
             </div>

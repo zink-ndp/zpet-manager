@@ -24,13 +24,13 @@ export default function ServiceDetail(props: any) {
   async function handleUpdate() {
     console.log(service.SRV_ID, name, des, price, status);
     try {
-      const response = await axios.post(apiUrl+"/api/v1/services/"+service.SRV_ID,{
+      const response = await axios.put(apiUrl+"/api/v1/services/"+service.SRV_ID,{
         name: name,
         des: des,
         price: price,
         stt: status,
       })
-      
+      console.log(response)
     } catch (error) {
       console.log(error)
     }
