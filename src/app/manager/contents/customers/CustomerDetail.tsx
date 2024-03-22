@@ -13,9 +13,9 @@ import InvoiceDetail from "../invoices/InvoiceDetail";
 var date_format = require("date-format");
 
 export default function CustomerDetail(props: any) {
-
-  const [name, setName] = useState(props.info.CTM_NAME)
-  const [phone, setPhone] = useState(props.info.CTM_PHONE)
+  const [name, setName] = useState(props.info.CTM_NAME);
+  const [phone, setPhone] = useState(props.info.CTM_PHONE);
+  const [point, setPoint] = useState(0);
 
   const [petsList, setPetsList] = useState<Array<any>>();
   const [invsList, setInvsList] = useState<Array<any>>();
@@ -56,6 +56,18 @@ export default function CustomerDetail(props: any) {
     }
   }
 
+  const fetchPoint = async () => {
+    try {
+      const response = await axios.get(
+        apiUrl + "/api/v1/customers/" + props.info.CTM_ID + "/points"
+      );
+      const data: any = await response.data.data;
+      setPoint(data[0].P_TOTAL);
+    } catch (error: any) {
+      setError(error.message);
+    }
+  };
+
   const fetchInvoices = async () => {
     try {
       const response = await axios.get(
@@ -71,19 +83,23 @@ export default function CustomerDetail(props: any) {
   useEffect(() => {
     fetchPetsList();
     fetchInvoices();
+    fetchPoint();
   }, []);
 
   async function handleUpdate() {
-    console.log(name, phone)
+    console.log(name, phone);
     try {
-      const response = await axios.put(apiUrl+"/api/v1/customers/"+props.info.CTM_ID, {
-        name: name,
-        phone: phone
-      })
-      console.log(response)
-      alert("Cập nhật thành công!")
+      const response = await axios.put(
+        apiUrl + "/api/v1/customers/" + props.info.CTM_ID,
+        {
+          name: name,
+          phone: phone,
+        }
+      );
+      console.log(response);
+      alert("Cập nhật thành công!");
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
@@ -117,8 +133,8 @@ export default function CustomerDetail(props: any) {
               className=" border-collapse border-b-2 border-slate-400"
               type="text"
               value={name}
-              onChange={(e)=>{
-                setName(e.target.value)
+              onChange={(e) => {
+                setName(e.target.value);
               }}
             />
           </div>
@@ -128,8 +144,8 @@ export default function CustomerDetail(props: any) {
               className=" border-collapse border-b-2 border-slate-400"
               type="text"
               value={phone}
-              onChange={(e)=>{
-                setPhone(e.target.value)
+              onChange={(e) => {
+                setPhone(e.target.value);
               }}
             />
           </div>
@@ -150,6 +166,10 @@ export default function CustomerDetail(props: any) {
             {date_format("dd/MM/yyyy", new Date(props.info.CTM_CREATEAT))}
           </p>
           <p className="flex-1 font-semibold text-black text-lg">
+            <span className="text-blue-700">Điểm tích luỹ: </span>
+            {point}
+          </p>
+          <p className="flex-1 font-semibold text-black text-lg">
             <span className="text-blue-700">Trạng thái: </span>
             {props.info.CTM_ISACTIVE ? "Hoạt động" : "Chưa có tài khoản"}
           </p>
@@ -166,11 +186,6 @@ export default function CustomerDetail(props: any) {
           </span>
         </p>
         <div className="flex flex-col">
-          {(() => {
-            if (error) {
-              return <div>Error fetching pets: {error}</div>;
-            }
-          })()}
           {(() => {
             if (!petsList) {
               return <div>Loading pets...</div>;
