@@ -40,7 +40,7 @@ export default function Staff(props: any) {
             </Badge>
           </div>
           <div className="flex flex-col ml-10">
-            <p className="text-blue-800 font-semibold ">{staff.STF_NAME}</p>
+            <p className="text-blue-800 font-semibold ">{staff.STF_NAME + " - " + (staff.STF_ISMANAGER ? "Quản lý" : "Nhân viên")}</p>
             <p className="">{staff.STF_EMAIL}</p>
             <p className="">{staff.STF_PHONE}</p>
           </div>

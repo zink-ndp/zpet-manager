@@ -1,9 +1,10 @@
+import { apiUrl } from "@/app/utils/apiUrl";
 import { Button } from "@mui/joy";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 export default function StaffDetail(props: any) {
   const staff = props.info;
-
   const id = staff.STF_ID;
   const [name, setName] = useState(staff.STF_NAME);
   const [phone, setPhone] = useState(staff.STF_PHONE);
@@ -26,6 +27,24 @@ export default function StaffDetail(props: any) {
     setIsInfoChanged(false);
   }
 
+  async function handleUpdate() {
+    console.log(name, phone, email, pw, role, isWorking);
+    try {
+      const response = await axios.put(apiUrl + "/api/v1/staffs/" + id, {
+        name: name,
+        phone: phone,
+        email: email,
+        pw: pw,
+        stt: parseInt(isWorking),
+        isAd: parseInt(role),
+      });
+      alert("Cập nhật thành công!");
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className=" flex flex-col">
       <p className="text-black font-bold text-lg mt-3">Thông tin nhân viên</p>
@@ -46,7 +65,7 @@ export default function StaffDetail(props: any) {
         value={name}
         onChange={(e) => {
           setName(e.target.value);
-          setIsInfoChanged(true)
+          setIsInfoChanged(true);
         }}
       />
       <p className="text-black text-lg mt-3">Số điện thoại:</p>
@@ -56,7 +75,7 @@ export default function StaffDetail(props: any) {
         value={phone}
         onChange={(e) => {
           setPhone(e.target.value);
-          setIsInfoChanged(true)
+          setIsInfoChanged(true);
         }}
       />
       <p className="text-black text-lg mt-3">Email:</p>
@@ -66,7 +85,7 @@ export default function StaffDetail(props: any) {
         value={email}
         onChange={(e) => {
           setEmail(e.target.value);
-          setIsInfoChanged(true)
+          setIsInfoChanged(true);
         }}
       />
       <p className="text-black text-lg mt-3">Mật khẩu:</p>
@@ -78,7 +97,7 @@ export default function StaffDetail(props: any) {
         name="password"
         onChange={(e) => {
           setPw(e.target.value);
-          setIsInfoChanged(true)
+          setIsInfoChanged(true);
         }}
       />
       <p className="text-black text-lg mt-3">
@@ -96,7 +115,7 @@ export default function StaffDetail(props: any) {
         name="password"
         onChange={(e) => {
           setRpw(e.target.value);
-          setIsInfoChanged(true)
+          setIsInfoChanged(true);
         }}
       />
 
@@ -105,8 +124,8 @@ export default function StaffDetail(props: any) {
         tabIndex={4}
         className="input-form"
         onChange={(e) => {
-          setIsWorking(e.target.value);
-          setIsInfoChanged(true)
+          setRole(e.target.value);
+          setIsInfoChanged(true);
         }}
       >
         <option value="0" selected={role ? false : true}>
@@ -122,8 +141,8 @@ export default function StaffDetail(props: any) {
         tabIndex={4}
         className="input-form"
         onChange={(e) => {
-          setRole(e.target.value);
-          setIsInfoChanged(true)
+          setIsWorking(e.target.value);
+          setIsInfoChanged(true);
         }}
       >
         <option value="0" selected={isWorking ? false : true}>
@@ -145,8 +164,8 @@ export default function StaffDetail(props: any) {
       <Button
         className="primary-btn disabled:primary-disabled-btn"
         disabled={!isInfoChanged}
-        onClick={()=>{
-            console.log(isInfoChanged)
+        onClick={() => {
+          handleUpdate();
         }}
       >
         Cập nhật thông tin
