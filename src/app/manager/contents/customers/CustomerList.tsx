@@ -52,7 +52,7 @@ export default function CustommerList() {
   }
 
   function reloadList(): void {
-    setCusList(allCus);
+    fetchCustomers()
   }
 
   return (

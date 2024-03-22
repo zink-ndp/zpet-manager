@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
 import Sheet from "@mui/joy/Sheet";
+import { Button } from "@mui/joy";
 import PetDetail from "../pets/PetDetail";
 import { apiUrl } from "@/app/utils/apiUrl";
 import { formatMoney } from "@/app/functions";
@@ -12,6 +13,10 @@ import InvoiceDetail from "../invoices/InvoiceDetail";
 var date_format = require("date-format");
 
 export default function CustomerDetail(props: any) {
+
+  const [name, setName] = useState(props.info.CTM_NAME)
+  const [phone, setPhone] = useState(props.info.CTM_PHONE)
+
   const [petsList, setPetsList] = useState<Array<any>>();
   const [invsList, setInvsList] = useState<Array<any>>();
   const [error, setError] = useState<string | null>();
@@ -22,7 +27,7 @@ export default function CustomerDetail(props: any) {
   const [petIdModal, setPetIdModal] = useState(0);
   const [mainImg, setMainImg] = useState();
 
-  const [invToModal, setInvToModal] = useState()
+  const [invToModal, setInvToModal] = useState();
 
   const fetchPetsList = async () => {
     try {
@@ -68,6 +73,20 @@ export default function CustomerDetail(props: any) {
     fetchInvoices();
   }, []);
 
+  async function handleUpdate() {
+    console.log(name, phone)
+    try {
+      const response = await axios.put(apiUrl+"/api/v1/customers/"+props.info.CTM_ID, {
+        name: name,
+        phone: phone
+      })
+      console.log(response)
+      alert("Cập nhật thành công!")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <>
       <Modal
@@ -92,16 +111,40 @@ export default function CustomerDetail(props: any) {
       </Modal>
       <div className=" p-5 flex flex-col justify-center items-center">
         <div className="flex flex-row w-full">
-          <p className="flex-1 font-semibold text-black text-lg">
+          <div className="flex-1 font-semibold text-black text-lg">
             <span className="text-blue-700">Tên KH: </span>
-            {props.info.CTM_NAME}
-          </p>
-          <p className="flex-1 font-semibold text-black text-lg">
+            <input
+              className=" border-collapse border-b-2 border-slate-400"
+              type="text"
+              value={name}
+              onChange={(e)=>{
+                setName(e.target.value)
+              }}
+            />
+          </div>
+          <div className="flex-1 font-semibold text-black text-lg">
             <span className="text-blue-700">Số điện thoại: </span>
-            {props.info.CTM_PHONE}
-          </p>
+            <input
+              className=" border-collapse border-b-2 border-slate-400"
+              type="text"
+              value={phone}
+              onChange={(e)=>{
+                setPhone(e.target.value)
+              }}
+            />
+          </div>
         </div>
-        <div className="flex flex-row w-full">
+        <div className="w-[100px] self-center mt-2">
+          <Button
+            variant="outlined"
+            onClick={() => {
+              handleUpdate();
+            }}
+          >
+            Cập nhật
+          </Button>
+        </div>
+        <div className="flex flex-row w-full mt-3">
           <p className="flex-1 font-semibold text-black text-lg">
             <span className="text-blue-700">Tham gia: </span>
             {date_format("dd/MM/yyyy", new Date(props.info.CTM_CREATEAT))}
@@ -170,7 +213,7 @@ export default function CustomerDetail(props: any) {
               invs.push(
                 <p
                   onClick={() => {
-                    setInvToModal(i)
+                    setInvToModal(i);
                     setModalOpenInv(!modalOpenInv);
                   }}
                   className="text-black text-lg cursor-pointer hover:scale-105 hover:text-blue-500"

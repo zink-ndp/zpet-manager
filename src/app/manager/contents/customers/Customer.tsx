@@ -11,7 +11,7 @@ import CustomerDetail from "./CustomerDetail";
 
 export default function Customer(props: any) {
   const [modalOpen, setModalOpen] = useState(false);
-  const avatar = require('./default.png')
+  const avatar = require("./default.png");
 
   return (
     <>
@@ -22,8 +22,8 @@ export default function Customer(props: any) {
               vertical: "top",
               horizontal: "right",
             }}
-            badgeContent="Active"
-            color="success"
+            badgeContent={props.info.CTM_ISACTIVE ? "Active" : "New"}
+            color={props.info.CTM_ISACTIVE ? "success" : "danger"}
           >
             <Typography
               sx={{
@@ -32,33 +32,30 @@ export default function Customer(props: any) {
               fontSize="xl"
             >
               {/* <Face3Icon className="text-blue-500" /> */}
-              <Image
-                alt="avt"
-                src={avatar}
-                height={50}
-                width={50}
-              />
+              <Image alt="avt" src={avatar} height={50} width={50} />
             </Typography>
           </Badge>
           <div className="flex flex-col">
             <p className="text-blue-800 font-semibold ml-7">
               {props.info.CTM_NAME}
             </p>
-            <p className="ml-7">
-              {props.info.CTM_PHONE}
-            </p>
+            <p className="ml-7">{props.info.CTM_PHONE}</p>
           </div>
         </div>
         <div className="flex flex-row float-end space-x-3">
           <p className=" cursor-pointer text-blue-500 hover:text-blue-800 hover:scale-110">
-            <PhoneEnabledIcon/>
+            <PhoneEnabledIcon />
           </p>
           <p className=" cursor-pointer text-blue-500 hover:text-blue-800 hover:scale-110">
-            <MailIcon/>
+            <MailIcon />
           </p>
-          <p className=" cursor-pointer text-blue-500 hover:text-blue-800 hover:scale-110"
-            onClick={()=>{setModalOpen(!modalOpen)}}>
-            <TroubleshootIcon/>
+          <p
+            className=" cursor-pointer text-blue-500 hover:text-blue-800 hover:scale-110"
+            onClick={() => {
+              setModalOpen(!modalOpen);
+            }}
+          >
+            <TroubleshootIcon />
           </p>
         </div>
       </div>
@@ -80,7 +77,7 @@ export default function Customer(props: any) {
           }}
         >
           <ModalClose variant="plain" sx={{ m: 1 }} />
-          <CustomerDetail info={props.info}/>
+          <CustomerDetail info={props.info} />
         </Sheet>
       </Modal>
     </>
