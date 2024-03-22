@@ -14,7 +14,7 @@ export default function ServicesList() {
   
     const [search, setSearch] = useState("");
   
-    const fetServices = async () => {
+    const fetchServices = async () => {
       try {
         const response = await axios.get(
           apiUrl+"/api/v1/services"
@@ -42,7 +42,7 @@ export default function ServicesList() {
     };
   
     useEffect(() => {
-      fetServices();
+      fetchServices();
     }, []);
   
     if (error) {
@@ -54,7 +54,7 @@ export default function ServicesList() {
     }
   
     function reloadList(): void {
-      setSrvList(allSrv);
+      fetchServices();
     }
   
     return (

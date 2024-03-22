@@ -28,6 +28,7 @@ export default function StaffDetail(props: any) {
 
   return (
     <div className=" flex flex-col">
+      <p className="text-black font-bold text-lg mt-3">Thông tin nhân viên</p>
       <p className="text-black text-lg mt-3">
         Mã nhân viên:
         <span className="italic text-slate-500 text-sm"> (Không thay đổi)</span>

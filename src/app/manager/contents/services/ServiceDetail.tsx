@@ -30,6 +30,7 @@ export default function ServiceDetail(props: any) {
         price: price,
         stt: status,
       })
+      alert("Cập nhật thành công!")
       console.log(response)
     } catch (error) {
       console.log(error)
@@ -38,6 +39,7 @@ export default function ServiceDetail(props: any) {
 
   return (
     <div className="flex flex-col">
+      <p className="text-black font-bold text-lg">Thông tin dịch vụ</p>
       <p className="text-black text-lg">
         Mã dịch vụ
         <span className="italic text-slate-500 text-sm"> (Không thay đổi)</span>
@@ -51,7 +53,7 @@ export default function ServiceDetail(props: any) {
 
       <p className="text-black text-lg">Tên dịch vụ:</p>
       <input
-        className="input-form border-slate-300 text-slate-500"
+        className="input-form border-slate-300 text-black"
         type="text"
         value={name}
         onChange={(e) => {
@@ -62,7 +64,7 @@ export default function ServiceDetail(props: any) {
 
       <p className="text-black text-lg">Mô tả: </p>
       <input
-        className="input-form border-slate-300 text-slate-500"
+        className="input-form border-slate-300 text-black"
         type="text"
         value={des}
         onChange={(e) => {
@@ -73,7 +75,7 @@ export default function ServiceDetail(props: any) {
 
       <p className="text-black text-lg">Giá: </p>
       <input
-        className="input-form border-slate-300 text-slate-500"
+        className="input-form border-slate-300 text-black"
         type="number"
         value={price}
         onChange={(e) => {
@@ -86,7 +88,7 @@ export default function ServiceDetail(props: any) {
       <select
         name="stt"
         id=""
-        className="input-form border-slate-300 text-slate-500"
+        className="input-form border-slate-300 text-black"
         onChange={(e)=>{
           setStatus(parseInt(e.target.value))
           setIsInfoChanged(true);

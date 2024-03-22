@@ -51,7 +51,7 @@ export default function VouchersList() {
   }
 
   function reloadList(): void {
-    setVouList(allVou);
+    fetchVouchers()
   }
 
   console.log(allVou)

@@ -53,7 +53,7 @@ export default function StaffList() {
   }
 
   function reloadList(): void {
-    setStaffList(allStaff);
+    fetchCustomers()
   }
 
   return (
