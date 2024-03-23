@@ -15,8 +15,8 @@ import RevenueChart from "./analytic/RevenueChart";
 
 export default function Dashboard() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [dateFrom, setDateFrom] = useState<Dayjs | null>(dayjs("2023-01-01"));
-  const [dateTo, setDateTo] = useState<Dayjs | null>(dayjs("2023-12-31"));
+  const [dateFrom, setDateFrom] = useState<Dayjs | null>(dayjs("2024-01-01"));
+  const [dateTo, setDateTo] = useState<Dayjs | null>(dayjs("2024-12-31"));
 
   return (
     <>
@@ -60,7 +60,7 @@ export default function Dashboard() {
             </LocalizationProvider>
           </div>
           <div className="w-full m-3 p-3">
-            <RevenueChart />
+            <RevenueChart dateFrom={dateFrom} dateTo={dateTo} />
           </div>
           <div className="flex flex-col lg:flex-row"></div>
         </div>
