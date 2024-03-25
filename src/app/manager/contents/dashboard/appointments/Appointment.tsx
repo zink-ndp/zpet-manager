@@ -4,6 +4,7 @@ import Image from "next/image";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
+import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
 import PageviewOutlinedIcon from "@mui/icons-material/PageviewOutlined";
 import { Modal, ModalClose, Sheet } from "@mui/joy";
 import axios from "axios";
@@ -92,24 +93,20 @@ export default function Appointment(props: any) {
   return (
     <>
       <div className="bg-blue-100 mt-3 w-full h-[100px] justify-center rounded-2xl flex flex-row group hover:scale-105 transition-all ease-in-out">
-        <Image
-          className=" rounded-2xl object-cover h-[90px] w-[90px] shadow-lg"
-          src="https://images.unsplash.com/photo-1636910826093-aafd696e3bd2?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="avt"
-          height={100}
-          width={100}
-        />
         <div className="flex flex-row flex-1 w-full content-between ">
+          <div className="flex flex-col h-full items-center justify-center content-center">
+            <CircleNotificationsIcon className=" text-blue-500 text-4xl ml-3" />
+          </div>
           <div className="flex flex-col p-3 ml-4 justify-center">
-            <p className="text-blue-600 text-lg ">
-              {convertDateToUTC(apm.APM_DATE).split(" ")[0]}
+            <p className="text-blue-800 text-md font-bold">
+              {apm.CTM_NAME ? apm.CTM_NAME : "Khách vãng lai"}
             </p>
-            <p className="text-blue-800 text-xl font-bold">{apm.CTM_NAME}</p>
-            {/* <p className="text-black text-lg">{apm.APMS_STATUSDESCRIPTION}</p> */}
+            <p className="text-black text-sm">{apm.APM_NOTE}</p>
           </div>
           <div className="flex flex-col flex-1 p-3 ml-4 justify-center items-end">
-            <p className="text-blue-800 text-xl font-semibold">
-              {apm.APM_TIME.slice(0, 5)}
+            <p className="text-blue-800 text-md lg:text-xl font-semibold">
+              {apm.APM_TIME.slice(0, 5)} -{" "}
+              {convertDateToUTC(apm.APM_DATE).split(" ")[0]}
             </p>
           </div>
         </div>
@@ -132,7 +129,9 @@ export default function Appointment(props: any) {
           <div className={`flex flex-row space-x-3 py-2 px-4 self-center`}>
             <button
               className={` ${
-                denyInput ? "text-neutral-300 cursor-not-allowed" : "text-blue-600 hover:scale-125"
+                denyInput
+                  ? "text-neutral-300 cursor-not-allowed"
+                  : "text-blue-600 hover:scale-125"
               } `}
               onClick={() => {
                 setModalOpen(!modalOpen);
@@ -150,7 +149,9 @@ export default function Appointment(props: any) {
             >
               <CheckIcon
                 className={` ${
-                  denyInput ? "text-neutral-300 cursor-not-allowed" : "text-green-600"
+                  denyInput
+                    ? "text-neutral-300 cursor-not-allowed"
+                    : "text-green-600"
                 } `}
               />
             </button>

@@ -25,8 +25,6 @@ export default function AppointmentsList() {
     fetchAppointmentByStt(index + 1);
   }, [index]);
 
-  console.log(apmList);
-
   return (
     <>
       <Tabs

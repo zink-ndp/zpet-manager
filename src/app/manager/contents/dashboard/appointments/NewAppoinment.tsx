@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Autocomplete from "@mui/joy/Autocomplete";
-import { Input, Textarea } from "@mui/joy";
+import { Checkbox, Input, Textarea } from "@mui/joy";
 import { DateTimePicker, MobileDateTimePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -9,12 +9,12 @@ import dayjs from "dayjs";
 import axios from "axios";
 import { apiUrl } from "@/app/utils/apiUrl";
 
-
 export default function NewAppoinment() {
   const testOption = ["opt1", "opt2", "opt3"];
 
-  const router = useRouter()
+  const router = useRouter();
 
+  const [isStranger, setIsStranger] = useState(false);
   const [dateTime, setDateTime] = useState<any>();
   const [phone, setPhone] = useState<String | null>("");
   const [cusName, setCusName] = useState<String | null>("");
@@ -27,9 +27,7 @@ export default function NewAppoinment() {
 
   const fetchCustomer = async () => {
     try {
-      const response = await axios.get(
-        apiUrl+"/api/v1/customers"
-      );
+      const response = await axios.get(apiUrl + "/api/v1/customers");
       const data = await response.data.data;
       setCusList(data);
     } catch (error) {}
@@ -37,9 +35,7 @@ export default function NewAppoinment() {
 
   const fetchCustomerByPhone = async (p: String) => {
     try {
-      const response = await axios.get(
-        `${apiUrl}/api/v1/customers/info/${p}`
-      );
+      const response = await axios.get(`${apiUrl}/api/v1/customers/info/${p}`);
       const data = await response.data.data;
       setCusName(data[0].CTM_NAME + " - Mã:" + data[0].CTM_ID);
     } catch (error) {}
@@ -47,9 +43,7 @@ export default function NewAppoinment() {
 
   const fetchServices = async () => {
     try {
-      const response = await axios.get(
-        apiUrl+"/api/v1/services/"
-      );
+      const response = await axios.get(apiUrl + "/api/v1/services/");
       const data: any = await response.data.data;
       setSrvList(data);
     } catch (err: any) {}
@@ -72,17 +66,21 @@ export default function NewAppoinment() {
 
   useEffect(() => {
     function checkFormOk() {
-      if (!phone || !cusName || !service || !dateTime) return false;
+      if (isStranger) {
+        if (!service || !dateTime) return false;
+      } else {
+        if (!phone || !cusName || !service || !dateTime) return false;
+      }
       return true;
     }
     const isOk = checkFormOk();
     isOk ? setBtnEnable(true) : setBtnEnable(false);
-  }, [phone, cusName, service, dateTime]);
+  }, [isStranger, phone, cusName, service, dateTime]);
 
   function handleAddAppointment() {
     const date = dateTime.$y + "/" + (dateTime.$M + 1) + "/" + dateTime.$D;
     const time = dateTime.$H + ":" + dateTime.$m;
-    const cusId = cusName?.split(":")[1];
+    const cusId = cusName ? cusName.split(":")[1] : null;
     const srvs: string[] = [];
     service.forEach((srv: string) => {
       srvs.push(srv.split(":")[1]);
@@ -90,18 +88,15 @@ export default function NewAppoinment() {
 
     const postNewAppointment = async () => {
       try {
-        const response = await axios.post(
-          apiUrl+"/api/v1/appointments/",
-          {
-            cusId: cusId,
-            date: date,
-            time: time,
-            note: note,
-            services: srvs,
-          }
-        );
+        const response = await axios.post(apiUrl + "/api/v1/appointments/", {
+          cusId: cusId,
+          date: date,
+          time: time,
+          note: note,
+          services: srvs,
+        });
         alert("Tạo thành công!");
-        router.refresh()
+        router.refresh();
       } catch (error) {
         alert(error);
       }
@@ -110,8 +105,8 @@ export default function NewAppoinment() {
   }
 
   return (
-    <div className="flex flex-col p-4">
-      <p className="text-xl font-bold mt-4 self-center">Thêm lịch hẹn</p>
+    <div className="flex flex-col p-4 space-y-4">
+      <p className="text-xl font-bold self-center">Thêm lịch hẹn</p>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <MobileDateTimePicker
           className="w-full h-[45px] mt-7"
@@ -120,8 +115,18 @@ export default function NewAppoinment() {
           onChange={(v: any) => setDateTime(v)}
         />
       </LocalizationProvider>
-      <p className="text-lg mt-4">Số điện thoại</p>
+      <Checkbox
+        className="text-xl  font-semi-bold"
+        label="Khách vãng lai"
+        size="lg"
+        checked={isStranger}
+        onChange={(e) => {
+          setIsStranger(!isStranger);
+        }}
+      />
+      <p className="text-lg ">Số điện thoại</p>
       <Autocomplete
+        disabled={isStranger}
         placeholder="Số điện thoại khách hàng"
         options={cusPhoneList}
         value={phone}
@@ -132,11 +137,11 @@ export default function NewAppoinment() {
           fetchCustomerByPhone(nValue);
         }}
       />
-      <p className="text-lg mt-4">Tên khách hàng</p>
+      <p className="text-lg ">Tên khách hàng</p>
       <Autocomplete
+        disabled={isStranger}
         placeholder="Tên khách hàng"
         options={testOption}
-        disabled
         value={cusName}
         className="w-full h-[50px]"
         freeSolo
@@ -144,7 +149,7 @@ export default function NewAppoinment() {
           setCusName(nValue);
         }}
       />
-      <p className="text-lg mt-4">Dịch vụ</p>
+      <p className="text-lg ">Dịch vụ</p>
       <Autocomplete
         multiple
         placeholder="Dịch vụ"
@@ -158,7 +163,7 @@ export default function NewAppoinment() {
         }}
         className="w-full h-[50px]"
       />
-      <p className="text-lg mt-4">Ghi chú:</p>
+      <p className="text-lg ">Ghi chú:</p>
       <Input
         className="w-full h-[50px]"
         placeholder="Ghi chú cho cửa hàng…"

@@ -48,11 +48,6 @@ export default function HorizontalBars(props: any) {
     fetchRevenue(props.dateFrom, props.dateTo);
   }, [props.dateFrom, props.dateTo]);
 
-  console.log(
-    convertDateToUTCymd(props.dateFrom),
-    convertDateToUTCymd(props.dateTo)
-  );
-
   return (
     <>
       <p className="text-blue-800 font-semibold text-xl text-center">
