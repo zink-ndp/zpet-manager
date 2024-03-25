@@ -2,7 +2,6 @@ import { formatMoney, getMonthAmount, convertDateToUTCymd } from "@/app/function
 import { apiUrl } from "@/app/utils/apiUrl";
 import { BarChart } from "@mui/x-charts/BarChart";
 import axios from "axios";
-import dayjs, { Dayjs } from "dayjs";
 
 import { useEffect, useState } from "react";
 export default function HorizontalBars(props: any) {
@@ -46,6 +45,8 @@ export default function HorizontalBars(props: any) {
   useEffect(()=>{
     fetchRevenue(props.dateFrom, props.dateTo)
   },[props.dateFrom, props.dateTo])
+
+console.log(convertDateToUTCymd(props.dateFrom), convertDateToUTCymd(props.dateTo))
 
   return (
     <>

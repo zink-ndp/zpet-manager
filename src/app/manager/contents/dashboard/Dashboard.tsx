@@ -15,7 +15,7 @@ import RevenueChart from "./analytic/RevenueChart";
 
 export default function Dashboard() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [dateFrom, setDateFrom] = useState<Dayjs | null>(dayjs("2024-01-01"));
+  const [dateFrom, setDateFrom] = useState<Dayjs | null>(dayjs("2024-01-02"));
   const [dateTo, setDateTo] = useState<Dayjs | null>(dayjs("2024-12-31"));
 
   return (
@@ -50,12 +50,12 @@ export default function Dashboard() {
               <DatePicker
                 label="Từ ngày"
                 value={dateFrom}
-                onChange={(newValue) => setDateFrom(newValue)}
+                onChange={(newValue) => setDateFrom(dayjs(newValue))}
               />
               <DatePicker
                 label="Đến ngày"
                 value={dateTo}
-                onChange={(newValue) => setDateTo(newValue)}
+                onChange={(newValue) => setDateTo(dayjs(newValue))}
               />
             </LocalizationProvider>
           </div>
