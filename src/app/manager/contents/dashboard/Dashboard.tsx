@@ -12,6 +12,7 @@ import dayjs, { Dayjs } from "dayjs";
 //icon
 import AddReactionIcon from "@mui/icons-material/AddReaction";
 import RevenueChart from "./analytic/RevenueChart";
+import PercentPerServices from "./analytic/PercentPerServices";
 
 export default function Dashboard() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -62,7 +63,14 @@ export default function Dashboard() {
           <div className="w-full m-3 p-3">
             <RevenueChart dateFrom={dateFrom} dateTo={dateTo} />
           </div>
-          <div className="flex flex-col lg:flex-row"></div>
+          <div className="flex flex-col lg:flex-row">
+            <div className="flex-1">
+              <PercentPerServices dateFrom={dateFrom} dateTo={dateTo} />
+            </div>
+            <div className="flex-1">
+              <PercentPerServices dateFrom={dateFrom} dateTo={dateTo} />
+            </div>
+          </div>
         </div>
         <div className="flex flex-col p-8 rounded-xl lg:w-[35%] bg-white shadow-xl">
           <div className="flex flex-row justify-between">
