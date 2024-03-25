@@ -13,6 +13,7 @@ import dayjs, { Dayjs } from "dayjs";
 import AddReactionIcon from "@mui/icons-material/AddReaction";
 import RevenueChart from "./analytic/RevenueChart";
 import PercentPerServices from "./analytic/PercentPerServices";
+import PercentPerPetType from "./analytic/PercentPerPetType";
 
 export default function Dashboard() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -68,7 +69,7 @@ export default function Dashboard() {
               <PercentPerServices dateFrom={dateFrom} dateTo={dateTo} />
             </div>
             <div className="flex-1">
-              <PercentPerServices dateFrom={dateFrom} dateTo={dateTo} />
+              <PercentPerPetType dateFrom={dateFrom} dateTo={dateTo} />
             </div>
           </div>
         </div>
