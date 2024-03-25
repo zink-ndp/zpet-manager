@@ -4,16 +4,14 @@ import { Button, Input } from "@mui/joy";
 import ReplayIcon from "@mui/icons-material/Replay";
 import Staff from "./Staff";
 import { apiUrl } from "@/app/utils/apiUrl";
+import { debounce } from "@/app/functions";
 
 
 export default function StaffList() {
   const [staffList, setStaffList] = useState<Array<any>>();
   const [allStaff, setAllStaff] = useState<Array<any>>();
   const [error, setError] = useState<string | null>();
-
-  const [search, setSearch] = useState("");
-
-  const fetchCustomers = async () => {
+  const fetchStaffs = async () => {
     try {
       const response = await axios.get(
         apiUrl+"/api/v1/staffs"
@@ -28,20 +26,26 @@ export default function StaffList() {
   };
 
   const searchApi = async (s: string) => {
-    try {
-      const response = await axios.get(
-        `${apiUrl}/api/v1/staffs/search/${s}`
-      );
-      const data: any = await response.data.data;
-      setStaffList(data);
-    } catch (err: any) {
-      setError(err);
-      console.error("Error fetching staffs:", err);
+    if (s!=''){
+      
+      try {
+        const response = await axios.get(
+          `${apiUrl}/api/v1/staffs/search/${s}`
+        );
+        const data: any = await response.data.data;
+        setStaffList(data);
+      } catch (err: any) {
+        setError(err);
+        console.error("Error fetching staffs:", err);
+      }
+    } else {
+      fetchStaffs()
     }
   };
+  const debounceSearch = debounce(searchApi, 500);
 
   useEffect(() => {
-    fetchCustomers();
+    fetchStaffs();
   }, []);
 
   if (error) {
@@ -53,7 +57,7 @@ export default function StaffList() {
   }
 
   function reloadList(): void {
-    fetchCustomers()
+    fetchStaffs()
   }
 
   return (
@@ -65,8 +69,7 @@ export default function StaffList() {
         variant="outlined"
         sx={{ "--Input-focused": 1 }}
         onChange={(e: any) => {
-          setSearch(e.target.value);
-          searchApi(e.target.value);
+          debounceSearch(e.target.value);
         }}
         className={` rounded-full self-end w-full lg:w-[30%] h-[40px] p-4 items-center mb-3`}
         endDecorator={

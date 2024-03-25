@@ -3,14 +3,12 @@ import axios from "axios";
 import { Button, Input } from "@mui/joy";
 import ReplayIcon from "@mui/icons-material/Replay";
 import Voucher from "./Voucher";
+import { debounce } from "@/app/functions";
 
 export default function VouchersList() {
   const [vouList, setVouList] = useState<Array<any>>();
   const [allVou, setAllVou] = useState<Array<any>>();
   const [error, setError] = useState<string | null>();
-
-  const [search, setSearch] = useState("");
-
   const fetchVouchers = async () => {
     try {
       const response = await axios.get(
@@ -26,17 +24,23 @@ export default function VouchersList() {
   };
 
   const searchApi = async (s: string) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:3100/api/v1/vouchers/search/${s}`
-      );
-      const data: any = await response.data.data;
-      setVouList(data);
-    } catch (err: any) {
-      setError(err);
-      console.error("Error fetching vouchers:", err);
+    if (s!=''){
+      try {
+        const response = await axios.get(
+          `http://localhost:3100/api/v1/vouchers/search/${s}`
+        );
+        const data: any = await response.data.data;
+        setVouList(data);
+      } catch (err: any) {
+        setError(err);
+        console.error("Error fetching vouchers:", err);
+      }
+    } else {
+      fetchVouchers()
     }
   };
+  const debounceSearch = debounce(searchApi, 500);
+
 
   useEffect(() => {
     fetchVouchers();
@@ -65,8 +69,7 @@ export default function VouchersList() {
         variant="outlined"
         sx={{ "--Input-focused": 1 }}
         onChange={(e: any) => {
-          setSearch(e.target.value);
-          searchApi(e.target.value);
+          debounceSearch(e.target.value);
         }}
         className={` rounded-full self-end w-full lg:w-[30%] h-[40px] p-4 items-center mb-3`}
         endDecorator={

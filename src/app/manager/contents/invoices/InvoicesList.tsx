@@ -3,6 +3,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import ReplayIcon from "@mui/icons-material/Replay";
 import Invoice from "./Invoice";
+import { debounce } from "@/app/functions";
 
 export default function InvoicesList() {
   const [invsList, setInvsList] = useState<Array<any>>();
@@ -21,17 +22,23 @@ export default function InvoicesList() {
     }
   };
   const searchApi = async (s: string) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:3100/api/v1/invoices/search/${s}`
-      );
-      const data: any = await response.data.data;
-      setInvsList(data);
-    } catch (err: any) {
-      setError(err);
-      console.error("Error fetching invoice:", err);
+    if (s != '') {
+      try {
+        const response = await axios.get(
+          `http://localhost:3100/api/v1/invoices/search/${s}`
+        );
+        const data: any = await response.data.data;
+        setInvsList(data);
+      } catch (err: any) {
+        setError(err);
+        console.error("Error fetching invoice:", err);
+      }
+    } else {
+      fetchInvoices()
     }
   };
+
+  const debounceSearch = debounce(searchApi, 500);
 
   useEffect(() => {
     fetchInvoices();
@@ -58,7 +65,7 @@ export default function InvoicesList() {
         variant="outlined"
         sx={{ "--Input-focused": 1 }}
         onChange={(e: any) => {
-          searchApi(e.target.value);
+          debounceSearch(e.target.value);
         }}
         className={` rounded-full self-end w-full lg:w-[30%] h-[40px] p-4 items-center mb-3`}
         endDecorator={

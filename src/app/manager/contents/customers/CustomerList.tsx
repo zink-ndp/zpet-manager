@@ -4,19 +4,16 @@ import Customer from "./Customer";
 import { Button, Input } from "@mui/joy";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { apiUrl } from "@/app/utils/apiUrl";
+import { debounce } from "@/app/functions";
 
 export default function CustommerList() {
   const [cusList, setCusList] = useState<Array<any>>();
   const [allCus, setAllCus] = useState<Array<any>>();
   const [error, setError] = useState<string | null>();
 
-  const [search, setSearch] = useState("");
-
   const fetchCustomers = async () => {
     try {
-      const response = await axios.get(
-        apiUrl+"/api/v1/customers"
-      );
+      const response = await axios.get(apiUrl + "/api/v1/customers");
       const data: any = await response.data.data;
       setCusList(data);
       setAllCus(data);
@@ -27,17 +24,23 @@ export default function CustommerList() {
   };
 
   const searchApi = async (s: string) => {
-    try {
-      const response = await axios.get(
-        `${apiUrl}/api/v1/customers/search/${s}`
-      );
-      const data: any = await response.data.data;
-      setCusList(data);
-    } catch (err: any) {
-      setError(err);
-      console.error("Error fetching pets:", err);
+    if (s != "") {
+      try {
+        const response = await axios.get(
+          `${apiUrl}/api/v1/customers/search/${s}`
+        );
+        const data: any = await response.data.data;
+        setCusList(data);
+      } catch (err: any) {
+        setError(err);
+        console.error("Error fetching pets:", err);
+      }
+    } else {
+      fetchCustomers();
     }
   };
+
+  const debounceSearch = debounce(searchApi, 500);
 
   useEffect(() => {
     fetchCustomers();
@@ -52,7 +55,7 @@ export default function CustommerList() {
   }
 
   function reloadList(): void {
-    fetchCustomers()
+    fetchCustomers();
   }
 
   return (
@@ -64,8 +67,7 @@ export default function CustommerList() {
         variant="outlined"
         sx={{ "--Input-focused": 1 }}
         onChange={(e: any) => {
-          setSearch(e.target.value);
-          searchApi(e.target.value);
+          debounceSearch(e.target.value);
         }}
         className={` rounded-full self-end w-full lg:w-[30%] h-[40px] p-4 items-center mb-3`}
         endDecorator={
@@ -74,7 +76,7 @@ export default function CustommerList() {
             onClick={() => reloadList()}
             variant="solid"
           >
-            <p  className="hidden lg:block">Load lại DS</p>
+            <p className="hidden lg:block">Load lại DS</p>
             <ReplayIcon />
           </Button>
         }

@@ -5,6 +5,7 @@ import { Button, Input } from "@mui/joy";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { storage } from "../../../../../public/firebase/db";
 import { listAll, ref } from "firebase/storage";
+import { debounce } from "@/app/functions";
 
 export default function PetsList() {
   const [petsList, setPetsList] = useState<Array<any>>();
@@ -24,17 +25,23 @@ export default function PetsList() {
   };
 
   const searchApi = async (s: string) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:3100/api/v1/pets/search/${s}`
-      );
-      const data: any = await response.data.data;
-      setPetsList(data);
-    } catch (err: any) {
-      setError(err);
-      console.error("Error fetching pets:", err);
+    if (s != "") {
+      try {
+        const response = await axios.get(
+          `http://localhost:3100/api/v1/pets/search/${s}`
+        );
+        const data: any = await response.data.data;
+        setPetsList(data);
+      } catch (err: any) {
+        setError(err);
+        console.error("Error fetching pets:", err);
+      }
+    } else {
+      fetchPets();
     }
   };
+
+  const debounceSearch = debounce(searchApi, 500);
 
   useEffect(() => {
     fetchPets();
@@ -49,7 +56,7 @@ export default function PetsList() {
   }
 
   function reloadList(): void {
-    fetchPets()
+    fetchPets();
   }
 
   return (
@@ -61,7 +68,7 @@ export default function PetsList() {
         variant="outlined"
         sx={{ "--Input-focused": 1 }}
         onChange={(e: any) => {
-          searchApi(e.target.value);
+          debounceSearch(e.target.value);
         }}
         className={` rounded-full self-end w-full lg:w-[30%] h-[40px] p-4 items-center mb-3`}
         endDecorator={

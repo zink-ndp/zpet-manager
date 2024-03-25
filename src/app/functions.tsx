@@ -1,5 +1,22 @@
 import React from "react";
 
+export function debounce<T extends (...args: any[]) => Promise<void>>(
+  callback: T,
+  wait: number
+): (...args: Parameters<T>) => void {
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+  return function (...args: Parameters<T>): void {
+    if (timeoutId !== null) {
+      clearTimeout(timeoutId);
+    }
+
+    timeoutId = setTimeout(() => {
+      callback(...args).catch(console.error);
+    }, wait);
+  };
+}
+
 export function getToday(): String {
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, "0");
@@ -42,9 +59,9 @@ export function convertDateToUTCymd(isoDateString: string): String {
 }
 
 export function getMonthAmount(dF: Date, dT: Date) {
-    let months;
+  let months;
   months = (dT.getFullYear() - dF.getFullYear()) * 12;
   months -= dF.getMonth();
   months += dT.getMonth();
-  return months <= 0 ? 0 : months+1;
+  return months <= 0 ? 0 : months + 1;
 }
