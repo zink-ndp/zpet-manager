@@ -104,7 +104,7 @@ export default function Appointment(props: any) {
             <p className="text-black text-sm">{apm.APM_NOTE}</p>
           </div>
           <div className="flex flex-col flex-1 p-3 ml-4 justify-center items-end">
-            <p className="text-blue-800 text-md lg:text-xl font-semibold">
+            <p className="text-blue-800 text-md font-semibold">
               {apm.APM_TIME.slice(0, 5)} -{" "}
               {convertDateToUTC(apm.APM_DATE).split(" ")[0]}
             </p>

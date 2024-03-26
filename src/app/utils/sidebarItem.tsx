@@ -23,7 +23,6 @@ export const sidebarItemsManager = [
 ];
 
 export const sidebarItemsStaff = [
-  { key: "dashboard", text: "Tổng quan", icon: <DashboardIcon /> },
   { key: "appointments", text: "Lịch hẹn", icon: <NotificationsActiveIcon /> },
   { key: "makeinvoice", text: "Lập hoá đơn", icon: <PostAddIcon /> },
   { key: "invoices", text: "Hoá đơn", icon: <ReceiptIcon /> },

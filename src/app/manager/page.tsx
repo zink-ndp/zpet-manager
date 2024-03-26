@@ -14,7 +14,8 @@ import ListIcon from "@mui/icons-material/List";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 export default function Page() {
-  const [activedTab, setActivedTab] = useState("dashboard");
+
+  const [activedTab, setActivedTab] = useState("appointments");
   const [expand, setExpand] = useState(false);
   const [session, setSession] = useState<Array<any> | null>(null);
   const [showLoading, setShowLoading] = useState(false);
@@ -107,7 +108,7 @@ export default function Page() {
             </div>
           </div>
           <div className="flex flex-col w-full">
-            <Content actived={activedTab} session={session} />
+            <Content actived={activedTab}/>
           </div>
         </div>
         <BackgroundMain />

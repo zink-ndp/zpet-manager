@@ -21,7 +21,6 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import AddAddress from "./AddAddress";
 
 export default function MakeInvoice() {
-  const testOption = ["opt1", "opt2", "opt3"];
   const today = getToday();
 
   const [session, setSession] = useState<Array<any> | null>(null);

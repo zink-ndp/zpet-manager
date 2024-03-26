@@ -6,6 +6,7 @@ import TabList from "@mui/joy/TabList";
 import Tab, { tabClasses } from "@mui/joy/Tab";
 import { TabPanel } from "@mui/joy";
 import axios from "axios";
+import { apiUrl } from "@/app/utils/apiUrl";
 
 export default function AppointmentsList() {
   const [index, setIndex] = React.useState(0);
@@ -14,7 +15,7 @@ export default function AppointmentsList() {
   const fetchAppointmentByStt = async (id: number) => {
     try {
       const response = await axios.get(
-        `http://localhost:3100/api/v1/appointments/status/${id}`
+        `${apiUrl}/api/v1/appointments/status/${id}`
       );
       const data = await response.data.data;
       setApmList(data);
