@@ -1,5 +1,6 @@
 import React from "react";
 import Dashboard from "./contents/dashboard/Dashboard";
+import Appointments from "./contents/appointments/Appointments";
 import MakeInvoice from "./contents/makeInvoice/MakeInvoice";
 import Invoices from "./contents/invoices/Invoices";
 import Pets from "./contents/pets/Pets";
@@ -13,6 +14,8 @@ export default function Content(props: any) {
   switch (props.actived) {
     case "dashboard":
       return <Dashboard />;
+    case "appointments":
+      return <Appointments />;
     case "makeinvoice":
       return <MakeInvoice />;
     case "invoices":

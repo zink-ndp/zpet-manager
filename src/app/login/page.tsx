@@ -14,7 +14,7 @@ import { login } from "../session/login";
 import { apiUrl } from "../utils/apiUrl";
 
 export default function Page() {
-  const iconDecoration = [<Person key={0} />, <People key={1} />];
+  const iconDecoration = [<People key={0} />, <Person key={1} />];
 
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");

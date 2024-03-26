@@ -10,61 +10,56 @@ import { getSessionData } from "../session/getSession";
 import { clearSession } from "../session/clearSession";
 
 //icon
-import ListIcon from '@mui/icons-material/List';
-import LogoutIcon from '@mui/icons-material/Logout';
+import ListIcon from "@mui/icons-material/List";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 export default function Page() {
-
   const [activedTab, setActivedTab] = useState("dashboard");
   const [expand, setExpand] = useState(false);
-  const [session, setSession] = useState<Array<any>|null>(null);
+  const [session, setSession] = useState<Array<any> | null>(null);
   const [showLoading, setShowLoading] = useState(false);
 
-  const router = useRouter()
+  const router = useRouter();
 
-  function handleLogout(){
-    setShowLoading(true)
-    clearSession("session")
-    router.replace("/login")
+  function handleLogout() {
+    setShowLoading(true);
+    clearSession("session");
+    router.replace("/login");
   }
 
-  useEffect(()=>{
-    getSessionData().then( (value) => {
-      setSession(value)
-    })
-  },[])
+  useEffect(() => {
+    getSessionData().then((value) => {
+      setSession(value);
+    });
+  }, []);
 
-  // if (session==null){
-  //   return (
-  //     <NotLogged/>
-  //   )
-  // }
+  if (session == null) {
+    return <NotLogged />;
+  }
 
-  // const isAdmin = session[0].STF_ISMANAGER
-  
-  const isAdmin = true
+  const isAdmin = session[0].STF_ISMANAGER;
 
-  const roleSidebar = (
-    isAdmin ? sidebarItemsManager : sidebarItemsStaff
-  )
-
+  const roleSidebar = isAdmin ? sidebarItemsManager : sidebarItemsStaff;
 
   return (
     <>
       <main className="w-full">
         <div className="flex flex-row z-10 w-full">
           <div
-            className={
-              ` ${expand ? 'w-[200px] fixed top-0 left-0' : 'w-[auto] relative'} ${isAdmin ? 'h-[860px]' : 'h-[660px]'} lg:flex lg:w-56 z-30 bg-white p-4 m-4 rounded-xl shadow-2xl flex-col lg:items-start items-center space-y-5 `
-            }
+            className={` ${
+              expand ? "w-[200px] fixed top-0 left-0" : "w-[auto] relative"
+            } ${
+              isAdmin ? "h-[860px]" : "h-[660px]"
+            } lg:flex lg:w-56 z-30 bg-white p-4 m-4 rounded-xl shadow-2xl flex-col lg:items-start items-center space-y-5 `}
           >
             <p className="hidden lg:block text-black text-2xl font-bold self-center py-4">
-              <span className="text-blue-500">
-                Z</span>Pet
+              <span className="text-blue-500">Z</span>Pet
             </p>
-            <button className="sidebar-btn lg:hidden"
-                onClick={(e)=>setExpand(!expand)}>
-              <ListIcon/>
+            <button
+              className="sidebar-btn lg:hidden"
+              onClick={(e) => setExpand(!expand)}
+            >
+              <ListIcon />
             </button>
             {(() => {
               const items: any = [];
@@ -79,24 +74,34 @@ export default function Page() {
                         : "sidebar-btn"
                     }
                     onClick={() => {
-                      setActivedTab(item.key)
-                      setExpand(false)
+                      setActivedTab(item.key);
+                      setExpand(false);
                     }}
                   >
                     {item.icon}
-                    {expand ? <p>{item.text}</p> : <p className="hidden lg:block">{item.text}</p>}
-                    
+                    {expand ? (
+                      <p>{item.text}</p>
+                    ) : (
+                      <p className="hidden lg:block">{item.text}</p>
+                    )}
                   </button>
                 );
               }
               return items;
             })()}
-            <button className={`sidebar-btn-logout`} 
-              onClick={handleLogout}>
-              <LogoutIcon/>
-              {expand ? <p>Đăng xuất</p> : <p className="hidden lg:block">Đăng xuất</p>}
+            <button className={`sidebar-btn-logout`} onClick={handleLogout}>
+              <LogoutIcon />
+              {expand ? (
+                <p>Đăng xuất</p>
+              ) : (
+                <p className="hidden lg:block">Đăng xuất</p>
+              )}
             </button>
-            <div className={` ${showLoading ? "flex" : "hidden"} flex-col items-center justify-center`}>
+            <div
+              className={` ${
+                showLoading ? "flex" : "hidden"
+              } flex-col items-center justify-center`}
+            >
               <Loading />
               <p className="text-blue-500">Đang đăng xuất</p>
             </div>

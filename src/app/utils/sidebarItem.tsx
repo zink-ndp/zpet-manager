@@ -7,16 +7,16 @@ import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
-import PercentIcon from '@mui/icons-material/Percent';
+import PercentIcon from "@mui/icons-material/Percent";
 
 export const sidebarItemsManager = [
   { key: "dashboard", text: "Tổng quan", icon: <DashboardIcon /> },
+  { key: "appointments", text: "Lịch hẹn", icon: <NotificationsActiveIcon /> },
   { key: "makeinvoice", text: "Lập hoá đơn", icon: <PostAddIcon /> },
   { key: "invoices", text: "Hoá đơn", icon: <ReceiptIcon /> },
   { key: "pets", text: "Thú cưng", icon: <PetsIcon /> },
   { key: "custommers", text: "Khách hàng", icon: <Face3Icon /> },
   { key: "conservation", text: "Chat", icon: <QuestionAnswerIcon /> },
-  // { key: "appointments", text: "Lịch hẹn", icon: <NotificationsActiveIcon /> },
   { key: "staffs", text: "Nhân viên", icon: <SupervisedUserCircleIcon /> },
   { key: "services", text: "Dịch vụ", icon: <MedicalInformationIcon /> },
   { key: "vouchers", text: "Khuyến mãi", icon: <PercentIcon /> },
@@ -24,10 +24,10 @@ export const sidebarItemsManager = [
 
 export const sidebarItemsStaff = [
   { key: "dashboard", text: "Tổng quan", icon: <DashboardIcon /> },
+  { key: "appointments", text: "Lịch hẹn", icon: <NotificationsActiveIcon /> },
   { key: "makeinvoice", text: "Lập hoá đơn", icon: <PostAddIcon /> },
   { key: "invoices", text: "Hoá đơn", icon: <ReceiptIcon /> },
   { key: "pets", text: "Thú cưng", icon: <PetsIcon /> },
   { key: "custommers", text: "Khách hàng", icon: <Face3Icon /> },
-  { key: "conservation", text: "conservation", icon: <QuestionAnswerIcon /> },
-  // { key: "appointments", text: "Lịch hẹn", icon: <QuestionAnswerIcon /> },
+  { key: "conservation", text: "Chat", icon: <QuestionAnswerIcon /> },
 ];
